@@ -95,7 +95,7 @@ public class BookDao {
 				book.setTitle(rs.getString("title"));
 				book.setAuthor(rs.getString("author"));
 				book.setCategory(rs.getString("category"));
-				book.setSold(false);
+				book.setSold(rs.getInt("sold") == 0 ? false : true);
 			}
 		} catch (SQLException e) {
 
