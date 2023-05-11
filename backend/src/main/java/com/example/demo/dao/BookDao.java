@@ -16,10 +16,10 @@ public class BookDao {
 	private String pass = "123456789";
 
 	private static final String SELECT_ALL_BOOKS = "select *from book";
-	private static final String SELECT_Search_BOOKS ="SELECT * FROM book WHERE title LIKE ? and author LIKE ? ";
+	private static final String SELECT_Search_BOOKS ="SELECT * FROM book WHERE title LIKE ? or author LIKE ? ";
 	private static final String SELECT_BOOK_BY_ID = "select *from book where bookcode=?";
-	private static final String INSERT_BOOKS_SQL = "INSERT INTO book(title,author,category,approved) VALUES (?, ?, ?, ?)";
-	private static final String UPDATE_BOOKS_SQL = "UPDATE book SET title=?, author=?, category=?, approved=? WHERE bookcode=?";
+	private static final String INSERT_BOOKS_SQL = "INSERT INTO book(title,author,category,sold) VALUES (?, ?, ?, ?)";
+	private static final String UPDATE_BOOKS_SQL = "UPDATE book SET title=?, author=?, category=?, sold=? WHERE bookcode=?";
 	private static final String DELETE_BOOKS_SQL = "DELETE FROM book WHERE bookcode = ?";
 
 	public BookDao() {
@@ -52,9 +52,9 @@ public class BookDao {
 				String title = rs.getString("title");
 				String author = rs.getString("author");
 				String category = rs.getString("category");
-				int approved = rs.getInt("approved");
+				int sold = rs.getInt("sold");
 
-				books.add(new Book(bookcode, title, author, category, approved == 0 ? false : true));
+				books.add(new Book(bookcode, title, author, category, sold == 0 ? false : true));
 			}
 		} catch (SQLException e) {
 
@@ -75,8 +75,8 @@ public class BookDao {
 	            String title = rs.getString("title");
 	            String author = rs.getString("author");
 	            String category = rs.getString("category");
-	            int approved = rs.getInt("approved");
-	            books.add(new Book(bookcode, title, author, category, approved == 0 ? false : true));
+	            int sold = rs.getInt("sold");
+	            books.add(new Book(bookcode, title, author, category, sold == 0 ? false : true));
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -95,7 +95,7 @@ public class BookDao {
 				book.setTitle(rs.getString("title"));
 				book.setAuthor(rs.getString("author"));
 				book.setCategory(rs.getString("category"));
-				book.setApproved(rs.getInt("approved") != 0 ? true : false);
+				book.setSold(false);
 			}
 		} catch (SQLException e) {
 
@@ -110,7 +110,7 @@ public class BookDao {
 			ps.setString(1, book.getTitle());
 			ps.setString(2, book.getAuthor());
 			ps.setString(3, book.getCategory());
-			ps.setInt(4, book.isApproved() ? 1 : 0);
+			ps.setInt(4, book.isSold() ? 1 : 0);
 			ps.executeUpdate();
 			ps.close();
 			connection.close();
@@ -127,7 +127,7 @@ public class BookDao {
 			ps.setString(1, book.getTitle());
 			ps.setString(2, book.getAuthor());
 			ps.setString(3, book.getCategory());
-			ps.setInt(4, book.isApproved() ? 1 : 0);
+			ps.setInt(4, book.isSold() ? 1 : 0);
 			ps.setInt(5, Integer.valueOf(book.getBookcode()));
 			ps.executeUpdate();
 			ps.close();

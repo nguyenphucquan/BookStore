@@ -37,7 +37,7 @@ function Books(props) {
         fetch('http://localhost:8080/books')
             .then(response => response.json())
             .then(data => {
-                setBooks(data);
+               // setBooks(data);
                 setFilterBook(data);
                 console.log(data)
             })
@@ -47,7 +47,7 @@ function Books(props) {
 
     useEffect(() => {
         setFilterBook(books.filter((item) => {
-            return item.name.toLowerCase().includes(searchTerm.toLowerCase()) && item.major.toLowerCase().includes(searchTerm.toLowerCase());
+            return item.title.toLowerCase().includes(searchTerm.toLowerCase()) || item.author.toLowerCase().includes(searchTerm.toLowerCase());
         }))
     }, [searchTerm])
 
@@ -72,26 +72,26 @@ function Books(props) {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
-                            <th>Dob</th>
-                            <th>Major</th>
-                            <th disabled>Vaccinated</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Category</th>
+                            <th disabled>Sold</th>
                             <th>Action</th>
                         </tr>
                     </thead>
 
                     <tbody>
 {filterBooks.map((book) => (
-                            <tr key={book.id}>
-                                <td>{book.id}</td>
-                                <td>{book.name}</td>
-                                <td>{book.dob}</td>
-                                <td>{book.major}</td>
+                            <tr key={book.bookcode}>
+                                <td>{book.bookcode}</td>
+                                <td>{book.title}</td>
+                                <td>{book.author}</td>
+                                <td>{book.category}</td>
                                 <td>
-                                    <input type="checkbox" defaultChecked={book.vaccinated}></input>
+                                    <input type="checkbox" defaultChecked={book.sold}></input>
                                 </td>
                                 <td>
-                                    <button className="btn btn-primary" onClick={() => { onViewClick(book.id) }}>View</button>
+                                    <button className="btn btn-primary" onClick={() => { onViewClick(book.bookcode) }}>View</button>
                                 </td>
                             </tr>
                         ))}

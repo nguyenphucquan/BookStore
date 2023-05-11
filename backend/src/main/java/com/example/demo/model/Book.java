@@ -5,14 +5,14 @@ public class Book {
 		private String title;
 		private String author;
 		private String category;
-		private boolean approved;
+		private boolean sold;
 
-		public Book(int bookcode, String title, String author, String category, boolean approved) {
+		public Book(int bookcode, String title, String author, String category, boolean sold) {
 			this.bookcode = bookcode;
 			this.title = title;
 			this.author = author;
 			this.category = category;
-			this.approved = approved;
+			this.sold = sold;
 		}
 
 		public Book() {
@@ -50,11 +50,11 @@ public class Book {
 			this.category = category;
 		}
 
-		public boolean isApproved() {
-			return approved;
+		public boolean isSold() {
+			return sold;
 		}
 
-		public void setApproved(boolean approved) {
-			this.approved = approved;
+		public void setSold(boolean sold) {
+			this.sold = sold;
 		}
 }
