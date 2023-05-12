@@ -11,7 +11,7 @@ function Books(props) {
     }
 
     const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
+        setSearchTerm(event.target.value);  
     };
 
     const handleSearch = () => {
@@ -37,7 +37,7 @@ function Books(props) {
         fetch('http://localhost:8080/books')
             .then(response => response.json())
             .then(data => {
-               // setBooks(data);
+                setBooks(data);
                 setFilterBook(data);
                 console.log(data)
             })
