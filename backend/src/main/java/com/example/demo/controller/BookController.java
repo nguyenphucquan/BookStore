@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.BookEntity;
-import com.example.demo.service.BookService;
+import com.example.demo.entity.Book;
+import com.example.demo.service.impl.BookService;
 
 @RestController
 @CrossOrigin
@@ -22,7 +21,7 @@ public class BookController {
 	@Autowired
 	private BookService bookService;
 	@GetMapping("/books")
-	public List<BookEntity> getBooks() {
+	public List<Book> getBooks() {
 	    return bookService.getAllBooks();
 	}
 //	@GetMapping("/books/{search}")
@@ -30,21 +29,21 @@ public class BookController {
 //	    return bookService.searchBooks(search);
 //	}
 	@GetMapping("/book/{bookcode}")
-	public BookEntity getBook(@PathVariable Long bookcode) {
+	public Book getBook(@PathVariable Long bookcode) {
 	    return bookService.getBookById(bookcode);
 	}
 	@PostMapping("/book/save/{bookcode}")
-	public List<BookEntity> addBook(@RequestBody BookEntity book) {
+	public List<Book> addBook(@RequestBody Book book) {
 	    bookService.addBook(book);
 	    return bookService.getAllBooks();
 	}
 	@PutMapping("book/save/{bookcode}")
-	public List<BookEntity> update(@RequestBody BookEntity book) {
+	public List<Book> update(@RequestBody Book book) {
 	    bookService.updateBook(book);
 	    return bookService.getAllBooks();
 	}
 	@DeleteMapping("/book/delete/{bookcode}")
-	public List<BookEntity> deleteBook(@PathVariable Long bookcode) {
+	public List<Book> deleteBook(@PathVariable Long bookcode) {
 	    bookService.deleteBook(bookcode);
 	    return bookService.getAllBooks();
 	}

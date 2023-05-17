@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 @JsonIgnoreProperties({ "hibernateLazyInitializer" })
 @Entity
 @Table(name = "books")
-public class BookEntity implements Serializable{
+public class Book implements Serializable{
     /**
 	 * 
 	 */
@@ -33,7 +33,7 @@ public class BookEntity implements Serializable{
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private CategoryEntity category;;
+    private Category category;;
     
     @JsonProperty("category_id") // Đặt tên trường muốn hiển thị trong JSON
     public Long getCategoryId() {
@@ -41,10 +41,10 @@ public class BookEntity implements Serializable{
     }
     private boolean sold;
     
-    public BookEntity() {
+    public Book() {
     }
 
-    public BookEntity(String title, String author, CategoryEntity category, boolean sold) {
+    public Book(String title, String author, Category category, boolean sold) {
         this.title = title;
         this.author = author;
         this.category = category;
@@ -75,11 +75,11 @@ public class BookEntity implements Serializable{
 		this.author = author;
 	}
 
-	public CategoryEntity getCategory() {
+	public Category getCategory() {
 		return category;
 	}
 
-	public void setCategory(CategoryEntity category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 

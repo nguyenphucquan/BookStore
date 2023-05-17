@@ -17,8 +17,13 @@ import jakarta.persistence.Table;
 @JsonIgnoreProperties({ "hibernateLazyInitializer" })
 @Entity
 @Table(name = "categories")
-public class CategoryEntity implements Serializable{
-    @Id
+public class Category implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
@@ -26,12 +31,12 @@ public class CategoryEntity implements Serializable{
 
     @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<BookEntity> books;
+    private List<Book> books;
     
-    public CategoryEntity() {
+    public Category() {
     }
     
-    public CategoryEntity(String name) {
+    public Category(String name) {
         this.name = name;
     }
 
@@ -51,11 +56,11 @@ public class CategoryEntity implements Serializable{
 		this.name = name;
 	}
 
-	public List<BookEntity> getBooks() {
+	public List<Book> getBooks() {
 		return books;
 	}
 
-	public void setBooks(List<BookEntity> books) {
+	public void setBooks(List<Book> books) {
 		this.books = books;
 	}
     
