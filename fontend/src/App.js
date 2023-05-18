@@ -1,24 +1,22 @@
 import React from 'react';
-//import logo from './logo.svg';
 import './App.css';
 import Books from './components/Books';
 import { Route, Routes } from 'react-router-dom';
 import Book from './components/Book';
 import LoginForm from './components/LoginForm';
-import Home from './components/Home';
+import Hello from './components/Hello';
+import LogoutForm from './components/LogoutForm';
+
 function App() {
   return (
-    <>   
     <div className="App">
-      <Routes> 
-         <Route path="/" element={<Home />} />
+      <Routes>
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/books" element={<Books />} />
-        <Route path="/book/:id" element={<Book />} />
+        <Route path="/logout" element={<LogoutForm />} />
+        <Route path="/hello" element={<Hello />} />
+
       </Routes>
     </div>
-    </>
-
   );
 }
 
