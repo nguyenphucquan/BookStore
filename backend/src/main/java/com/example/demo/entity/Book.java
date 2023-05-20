@@ -1,55 +1,61 @@
 package com.example.demo.entity;
+import java.sql.Date;
 
-import java.io.Serializable;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties({ "hibernateLazyInitializer" })
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "books")
-public class Book implements Serializable{
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Book {
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String title;
-    private String author;
-    
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;;
-    
-    @JsonProperty("category_id") // Đặt tên trường muốn hiển thị trong JSON
-    public Long getCategoryId() {
-        return category != null ? category.getId() : null;
-    }
-    private boolean sold;
-    
-    public Book() {
-    }
+	@Column(columnDefinition = "nvarchar(255)")
+	private String title;
 
-    public Book(String title, String author, Category category, boolean sold) {
-        this.title = title;
-        this.author = author;
-        this.category = category;
-        this.sold = sold;
-    }
+	@Column(columnDefinition = "nvarchar(255)")
+	private String author;
+
+	@Column(columnDefinition = "nvarchar(255)")
+	private String category;
+
+	@Column(columnDefinition = "nvarchar(255)")
+	private String description;
+
+	private Date date;
+
+	private int sold, page;
+	
+	@Column(columnDefinition = "nvarchar(255)")
+	private String imagePath;
+
+	
+	public Book(Long id, String title, String author, String category, String description, Date date, int sold,
+			int page, String imagePath) {
+		this.id = id;
+		this.title = title;
+		this.author = author;
+		this.category = category;
+		this.description = description;
+		this.date = date;
+		this.sold = sold;
+		this.page = page;
+		this.imagePath = imagePath;
+	}
+
+	public Book() {
+		
+	}
 
 	public Long getId() {
 		return id;
@@ -75,20 +81,53 @@ public class Book implements Serializable{
 		this.author = author;
 	}
 
-	public Category getCategory() {
+	public String getCategory() {
 		return category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategory(String category) {
 		this.category = category;
 	}
 
-	public boolean isSold() {
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public int getSold() {
 		return sold;
 	}
 
-	public void setSold(boolean sold) {
+	public void setSold(int sold) {
 		this.sold = sold;
 	}
-    
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	
+	
 }
