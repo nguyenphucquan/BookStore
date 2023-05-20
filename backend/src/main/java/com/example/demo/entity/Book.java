@@ -129,5 +129,4 @@ public class Book {
 		this.imagePath = imagePath;
 	}
 	
-	
 }

@@ -13,32 +13,32 @@ import com.example.demo.service.impl.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
 	@Autowired
     private  UserService userService;
 
-    @GetMapping("/all")
+    @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.FOUND);
     }
-    @PostMapping("/add")
+    @PostMapping("user/add")
     public ResponseEntity<User> add(@RequestBody User user){
         return ResponseEntity.ok(userService.add(user));
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("user/{email}")
     public User getByEmail(@PathVariable("email") String email){
         return  userService.getUser(email);
     }
 
-    @DeleteMapping("/{email}")
+    @DeleteMapping("user/{email}")
     public void delete(@PathVariable("email") String email){
         userService.delete(email);
     }
 
-    @PutMapping("/update")
+    @PutMapping("user/update")
     public ResponseEntity<User> update(@RequestBody User user){
         return ResponseEntity.ok(userService.update(user));
     }

@@ -1,23 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 
 function BookDetail() {
-  const params = useParams();
+  const { id } = useParams();
   const [book, setBook] = useState({});
   const [image, setImage] = useState(null);
-  const id = params.id;
-  //const navigate = useNavigate();
-
-  useEffect(() => {
-    fetch(`http://localhost:8080/book/${id}`)
-      .then((response) => response.json())
-      .then((data) => setBook(data))
-      .catch((error) => console.log(error));
-  }, [id]);
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
   };
+
+  useEffect(() => {
+    const fetchBook = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/book/${id}`);
+        const data = await response.json();
+        setBook(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchBook();
+  }, [id]);
 
   return (
     <div className="container">
@@ -27,36 +32,66 @@ function BookDetail() {
           <div className="row">
             <div className="col">
               <label className="col-lg-10 form-label">Title:</label>
-              <input type="text" className="col-lg-10  form-control" value={book.title} readOnly />
+              <input
+                type="text"
+                className="col-lg-10 form-control"
+                value={book.title || ""}
+                onChange={(e) => setBook({ ...book, title: e.target.value })}
+              />
             </div>
             <div className="col">
               <label className="form-label">Author:</label>
-              <input type="text" className="form-control" value={book.author} readOnly />
+              <input
+                type="text"
+                className="col-lg-10 form-control"
+                value={book.author || ""}
+                onChange={(e) => setBook({ ...book, author: e.target.value })}
+              />
             </div>
           </div>
           <hr />
           <div className="row">
             <div className="col">
               <label className="form-label">Description:</label>
-              <input type="text" className="form-control" value={book.description} readOnly />
+              <input
+                type="text"
+                className="col-lg-10 form-control"
+                value={book.description || ""}
+                onChange={(e) => setBook({ ...book, description: e.target.value })}
+              />
             </div>
           </div>
           <hr />
           <div className="row">
             <div className="col">
               <label className="form-label">Date Established:</label>
-              <input type="text" className="form-control" value={book.date} readOnly />
+              <input
+                type="date"
+                className="col-lg-10 form-control"
+                value={book.date || ""}
+                onChange={(e) => setBook({ ...book, date: e.target.value })}
+              />
             </div>
             <div className="col">
               <label className="form-label">Page Count:</label>
-              <input type="text" className="form-control" value={book.page} readOnly />
+              <input
+                type="text"
+                className="col-lg-10 form-control"
+                value={book.page || ""}
+                onChange={(e) => setBook({ ...book, page: e.target.value })}
+              />
             </div>
           </div>
           <hr />
           <div className="row">
             <div className="col">
               <label className="form-label">Category:</label>
-              <input type="text" className="form-control" value={book.category} readOnly />
+              <input
+                type="text"
+                className="col-lg-10 form-control"
+                value={book.category || ""}
+                onChange={(e) => setBook({ ...book, category: e.target.value })}
+              />
             </div>
           </div>
         </div>
@@ -81,7 +116,7 @@ function BookDetail() {
       </div>
       <div className="row">
         <div className="col">
-          <Link to="/books" className="btn btn-primary">Back to Books</Link>
+          <NavLink to="/books" className="btn btn-primary">Back to Books</NavLink>
         </div>
       </div>
     </div>

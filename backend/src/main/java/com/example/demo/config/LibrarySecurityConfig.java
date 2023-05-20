@@ -15,31 +15,31 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.example.demo.jwt.JWTAuthenticationFilter;
 
+@CrossOrigin
 @Configuration
 @EnableWebSecurity
 public class LibrarySecurityConfig {
-	
-	
-    private static final String[] SECURED_URLs = {};
 
-    private static final String[] UN_SECURED_URLs = {
-            "/api/books",
-            "/api/book/{id}",
-            "/users/**",
-            "/api/**"
-    };
-    @Autowired
-    private JWTAuthenticationFilter authenticationFilter;
+	private static final String[] SECURED_URLs = {};
 
-    @Autowired
-    private LibraryUserDetailsService userDetailsService;
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+	private static final String[] UN_SECURED_URLs = { "/api/books", "/api/book/{id}", "/api/user/**", "/api/login",
+			"/logout" };
+
+	@Autowired
+	private JWTAuthenticationFilter authenticationFilter;
+
+	@Autowired
+	private LibraryUserDetailsService userDetailsService;
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 	@Bean
 	public UserDetailsService userDetailsService() {
@@ -54,27 +54,28 @@ public class LibrarySecurityConfig {
 		return authenticationProvider;
 	}
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers(UN_SECURED_URLs).permitAll().and()
-                .authorizeHttpRequests().requestMatchers(SECURED_URLs)
-                .hasAuthority("ADMIN")
-                .anyRequest().authenticated()
-                .and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-                //.authenticated().and().httpBasic().and().build();
-               // .authenticated().and().formLogin().and().build();
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		// http.logout(logout -> logout.logoutUrl("http://localhost:8080/logout"));
+		http.sessionManagement(a -> a.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//		http.headers(t -> t.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
+//				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "http://localhost:3000"))
+//				.addHeaderWriter(
+//						new StaticHeadersWriter("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"))
+//				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers",
+//						"Origin, X-Api-Key, X-Requested-With, Content-Type, Accept, Authorization")));
+        http.formLogin(login->login.loginPage("http://localhost:3000/login"));
+		
+        return http.csrf().disable().authorizeHttpRequests().requestMatchers(UN_SECURED_URLs).permitAll().and()
+				.authorizeHttpRequests().requestMatchers(SECURED_URLs).hasAuthority("ADMIN").anyRequest()
+				.authenticated().and().httpBasic().and().build();
 
-    }
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
+	}
+
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+		return authConfig.getAuthenticationManager();
+	}
 
 }
