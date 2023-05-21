@@ -30,11 +30,11 @@ const LoginForm = () => {
         localStorage.setItem('userRole', role);
 
         console.log(role)
-        // if (role === 'ADMIN') {
-        //   navigate('/books');
-        // } else {
-        //   navigate('/hello');
-        // }
+        if (role === 'ADMIN') {
+          navigate('/books');
+        } else {
+          navigate('/hello');
+        }
       } else {
         setErrorMessage('Đăng nhập không thành công.');
       }

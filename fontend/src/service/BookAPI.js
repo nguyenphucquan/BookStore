@@ -9,9 +9,9 @@ const BookAPI = {
     const url = `/books/${id}`;
     return axiosClient.get(url);
   },
-  createBook: (book) => {
-    const url = "/books";
-    return axiosClient.post(url, book);
+  createBook: (id, book) => {
+    const url = `/book/save/${id}`;
+    return axiosClient.post(url, book)
   },
   updateBook: (id, book) => {
     const url = `/books/${id}`;

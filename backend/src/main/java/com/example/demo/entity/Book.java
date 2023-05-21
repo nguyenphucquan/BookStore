@@ -37,11 +37,11 @@ public class Book {
 	private int sold, page;
 	
 	@Column(columnDefinition = "nvarchar(255)")
-	private String imagePath;
+	private String image;
 
 	
 	public Book(Long id, String title, String author, String category, String description, Date date, int sold,
-			int page, String imagePath) {
+			int page, String image) {
 		this.id = id;
 		this.title = title;
 		this.author = author;
@@ -50,7 +50,7 @@ public class Book {
 		this.date = date;
 		this.sold = sold;
 		this.page = page;
-		this.imagePath = imagePath;
+		this.image = image;
 	}
 
 	public Book() {
@@ -121,12 +121,12 @@ public class Book {
 		this.page = page;
 	}
 
-	public String getImagePath() {
-		return imagePath;
+	public String getImage() {
+		return image;
 	}
 
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 }

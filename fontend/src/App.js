@@ -5,7 +5,6 @@ import { Route, Routes } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import Hello from './components/Hello';
 import LogoutForm from './components/LogoutForm';
-import ShopPage from './components/User';
 import BookDetail from './components/BookDetail';
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
       <Route path="/book/:id" element={<BookDetail />} />
       <Route path="/logout" element={<LogoutForm />} />
       <Route path="/hello" element={<Hello />} />
-      <Route path="" element={<ShopPage />} />
 
       </Routes>
     </div>

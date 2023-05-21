@@ -27,7 +27,7 @@ public class LibrarySecurityConfig {
 
 	private static final String[] SECURED_URLs = {};
 
-	private static final String[] UN_SECURED_URLs = { "/api/books", "/api/book/{id}", "/api/user/**", "/api/login",
+	private static final String[] UN_SECURED_URLs = { "/api/books/**", "/api/book/{id}", "/api/user/**", "/api/login","/api/books","api/book/save/**",
 			"/logout" };
 
 	@Autowired
@@ -49,7 +49,7 @@ public class LibrarySecurityConfig {
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-		authenticationProvider.setUserDetailsService(userDetailsService());
+		authenticationProvider.setUserDetailsService(userDetailsService()); 	
 		authenticationProvider.setPasswordEncoder(passwordEncoder());
 		return authenticationProvider;
 	}
