@@ -19,14 +19,11 @@ public class LibraryUserDetailsService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	    User user = userRepository.findByEmail(username);
+	    User user = userRepository.findByUserName(username);
 	    if (user != null) {
 	        return new LibraryUserDetails(user);
 	    } else {
 	        throw new UsernameNotFoundException("No user found");
 	    }
 	}
-
-
-
 }

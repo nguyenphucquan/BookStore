@@ -29,27 +29,28 @@ public class UserService implements IUserService {
         return userRepository.save(user);
     }
 
+    public User getUserByUserName(String username) {
+    	List<User> list = userRepository.findAll();
+    	if(list.size()==0) {
+    		return null;
+    	}else {
+        	for(User u:list) {
+        		if(u.getUserName().equalsIgnoreCase(username)){
+        			return u;
+        		}
+        	}
+    	}
+    	return null;
+    }
+    
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
-    }
-
-    @Override
-    @Transactional
-    public void delete(String email) {
-        userRepository.deleteByEmail(email);
-    }
-
-	@Override
-	public User getUser(String email) {
-	      return userRepository.findByEmail(email);
-	}       
-
+    }  
     @Override
     public User update(User user) {
         user.setRoles(user.getRoles());
         return userRepository.save(user);
     }
-
 
 }

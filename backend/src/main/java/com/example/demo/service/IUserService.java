@@ -11,10 +11,6 @@ public interface IUserService {
 
 	List<User> getAllUsers();
 
-	void delete(String email);
-
-	User getUser(String email);
-
 	User update(User user);
 }
 

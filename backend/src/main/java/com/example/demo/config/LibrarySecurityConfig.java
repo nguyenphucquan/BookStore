@@ -27,14 +27,14 @@ public class LibrarySecurityConfig {
 
 	private static final String[] SECURED_URLs = {};
 
-	private static final String[] UN_SECURED_URLs = { "/api/books/**", "/api/book/{id}", "/api/user/**", "/api/login","/api/books","api/book/save/**",
+	private static final String[] UN_SECURED_URLs = { "/api/books/**", "/api/book/{id}", "/api/register", "/api/login","/api/books","api/book/save/**",
 			"/logout" };
 
 	@Autowired
 	private JWTAuthenticationFilter authenticationFilter;
 
 	@Autowired
-	private LibraryUserDetailsService userDetailsService;
+	private UserDetailsService userDetailsService;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -42,7 +42,7 @@ public class LibrarySecurityConfig {
 	}
 
 	@Bean
-	public UserDetailsService userDetailsService() {
+	public LibraryUserDetailsService userDetailsService() {
 		return new LibraryUserDetailsService();
 	}
 
@@ -59,12 +59,6 @@ public class LibrarySecurityConfig {
 		// http.logout(logout -> logout.logoutUrl("http://localhost:8080/logout"));
 		http.sessionManagement(a -> a.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-//		http.headers(t -> t.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
-//				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "http://localhost:3000"))
-//				.addHeaderWriter(
-//						new StaticHeadersWriter("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"))
-//				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers",
-//						"Origin, X-Api-Key, X-Requested-With, Content-Type, Accept, Authorization")));
         http.formLogin(login->login.loginPage("http://localhost:3000/login"));
 		
         return http.csrf().disable().authorizeHttpRequests().requestMatchers(UN_SECURED_URLs).permitAll().and()

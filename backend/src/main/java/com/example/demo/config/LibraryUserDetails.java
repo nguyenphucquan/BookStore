@@ -22,7 +22,7 @@ public class LibraryUserDetails implements UserDetails{
     private List<GrantedAuthority> authorities;
 
     public LibraryUserDetails(User user) {
-        userName = user.getEmail();
+        userName = user.getUserName();
         password = user.getPassword();
         authorities = Arrays.stream(user.getRoles()
                 .split(","))

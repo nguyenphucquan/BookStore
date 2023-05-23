@@ -28,9 +28,4 @@ public class UserController {
         return ResponseEntity.ok(userService.add(user));
     }
 
-    @GetMapping("user/{email}")
-    public User getByEmail(@PathVariable("email") String email){
-        return  userService.getUser(email);
-    }
-
 }

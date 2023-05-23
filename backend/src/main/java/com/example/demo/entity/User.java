@@ -19,10 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
-    @NaturalId(mutable = true)
-    @Column(length = 100)
+    private String userName;
     private String email;
     private String password;
     private String roles;
@@ -31,18 +28,6 @@ public class User {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 	public String getEmail() {
 		return email;
@@ -62,6 +47,10 @@ public class User {
 	public void setRoles(String roles) {
 		this.roles = roles;
 	}
-    
-    
+	public String getUserName() {
+		return userName;
+	}
+	public void setUsername(String userName) {
+		this.userName = userName;
+	}
 }
