@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BookAPI from "../service/bookAPI";
+import BookAPI from "../service/BookService";
 
 function Books(props) {
     const [books, setBooks] = useState([]);
@@ -26,6 +26,7 @@ function Books(props) {
         BookAPI
           .getAllBooks()
           .then((response) => {
+            console.log(response)
             setBooks(response);
             setFilterBooks(response);
           })
@@ -66,7 +67,7 @@ function Books(props) {
                                 <td>{book.author}</td>
                                 <td>{book.description}</td>
                                 <td>{book.category}</td>
-                                <td>{new Date(book.date).toLocaleDateString()}</td>
+                                <td>{book.date}</td>
                                 <td>{book.page}</td>
                                 <td>{book.sold}</td>
                                 <td>

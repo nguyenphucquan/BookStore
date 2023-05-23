@@ -14,7 +14,7 @@ const BookAPI = {
     return axiosClient.post(url, book)
   },
   updateBook: (id, book) => {
-    const url = `/books/${id}`;
+    const url = `/book/save/${id}`;
     return axiosClient.put(url, book);
   },
   deleteBook: (id) => {

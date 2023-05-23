@@ -59,7 +59,6 @@ public class BookController {
 		}
 	}
 	
-
 	@PostMapping("/book/save/{id}")
 	public ResponseEntity<List<Book>> addBook(@RequestParam("book") String bookJson, @RequestParam("image") MultipartFile image) {
 	    try {
@@ -72,7 +71,6 @@ public class BookController {
 	            String imagePath = saveImage(image);
 	            book.setImage(imagePath);
 	        }
-
 	        // Lưu đối tượng Book
 	        bookService.save(book);
 
@@ -108,18 +106,30 @@ public class BookController {
 //		return ResponseEntity.status(HttpStatus.CREATED).body(book);
 //	}
 
-	@PutMapping("book/save/{id}")
-	public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
-		Book existingBook = bookService.findById(id);
-		if (existingBook != null) {
-			book.setId(existingBook.getId());
-			bookService.save(book);
-			return ResponseEntity.ok(book);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
+	@PutMapping("/book/save/{id}")
+	public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestParam("book") String bookJson, @RequestParam(value = "image", required = false) MultipartFile image) {
+	    try {
+	        Book existingBook = bookService.findById(id);
+	        if (existingBook == null) {
+	            return ResponseEntity.notFound().build();
+	        }
 
+	        Book book = objectMapper.readValue(bookJson, Book.class);
+	        book.setId(existingBook.getId());
+
+	        if (image != null && !image.isEmpty()) {
+	            String imagePath = saveImage(image);
+	            book.setImage(imagePath);
+	        }
+
+	        bookService.save(book);
+	        return ResponseEntity.ok(book);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
+	
 	@DeleteMapping("/books/{id}")
 	public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
 		Book existingBook = bookService.findById(id);

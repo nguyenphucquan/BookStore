@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, NavLink } from "react-router-dom";
-import BookAPI from "../service/bookAPI";
+import BookAPI from "../service/BookService";
 
 function BookDetail() {
   const { id } = useParams();
@@ -53,17 +53,25 @@ function BookDetail() {
         const formData = new FormData();
         if (image !== null) formData.append('image', image);
         formData.append('book', JSON.stringify(book));
-        console.log(formData)
-        
-        const response = await fetch(`http://localhost:8080/api/book/save/${id}`, {
-          method: "POST",
-          body: formData,
-        });
+        console.log(formData);
 
-        if (response.ok) {
-          console.log("Book saved successfully.");
+        if (id === "-1") {
+          // Tạo sách mới
+          const response = await BookAPI.createBook(id, formData);
+          console.log(response.status)
+          if (response.status === 200) {
+            console.log("Book created successfully.");
+          } else {
+            console.error("Failed to create book.");
+          }
         } else {
-          console.error("Failed to save book.");
+          // Cập nhật sách đã tồn tại
+          const response = await BookAPI.updateBook(id, formData);
+          if (response.status === 200) {
+            console.log("Book updated successfully.");
+          } else {
+            console.error("Failed to update book.");
+          }
         }
       }
 

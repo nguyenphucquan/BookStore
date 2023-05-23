@@ -29,9 +29,10 @@ public class Book {
 	@Column(columnDefinition = "nvarchar(255)")
 	private String category;
 
-	@Column(columnDefinition = "nvarchar(255)")
+	@Column(columnDefinition = "nvarchar(2500)")
 	private String description;
 
+	@Column
 	private Date date;
 
 	private int sold, page;
