@@ -21,7 +21,7 @@ public class User {
     private Long id;
     private String userName;
     private String email;
-    private String password;
+    private String passWord;
     private String roles;
 	public Long getId() {
 		return id;
@@ -36,10 +36,10 @@ public class User {
 		this.email = email;
 	}
 	public String getPassword() {
-		return password;
+		return passWord;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
 	}
 	public String getRoles() {
 		return roles;

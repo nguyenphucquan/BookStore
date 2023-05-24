@@ -5,7 +5,7 @@ import BookAPI from "../service/BookService";
 function Books(props) {
     const [books, setBooks] = useState([]);
     // const [book, setbook] = useState({});
-    const [filterBooks, setFilterBooks] = useState([]);
+    //const [filterBooks, setFilterBooks] = useState([]);
     const navigate = useNavigate();
 
     const onViewClick = (id) => {
@@ -17,7 +17,7 @@ function Books(props) {
           .then(() => {
             const updatedBooks = books.filter((book) => book.id !== id);
             setBooks(updatedBooks);
-            setFilterBooks(updatedBooks);
+          //  setFilterBooks(updatedBooks);
           })
           .catch((error) => console.log(error));
       };
@@ -26,9 +26,9 @@ function Books(props) {
         BookAPI
           .getAllBooks()
           .then((response) => {
-            console.log(response)
-            setBooks(response);
-            setFilterBooks(response);
+           // console.log(response)
+            setBooks(response.data);
+          //  setFilterBooks(response);
           })
           .catch((err) => console.log(err));
       }, []);    
@@ -60,14 +60,15 @@ function Books(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {filterBooks.map((book) => (
+
+                        {books && books.map((book) => (
                             <tr key={book.id}>
                                 <td>{book.id}</td>
                                 <td>{book.title}</td>
                                 <td>{book.author}</td>
                                 <td>{book.description}</td>
                                 <td>{book.category}</td>
-                                <td>{book.date}</td>
+                                <td>{new Date(book.date).toLocaleDateString()}</td>
                                 <td>{book.page}</td>
                                 <td>{book.sold}</td>
                                 <td>

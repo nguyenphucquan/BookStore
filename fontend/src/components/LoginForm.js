@@ -1,40 +1,41 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import UserService from '../service/UserService';
+import '../styles/Login.css'; // Import the CSS file for styling
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/authReducer';
 
 const LoginForm = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch('http://localhost:8080/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userName: username,
-          password: password,
-        }),
-      });
-      console.log(response)
-      if (response.ok) {
-        const data = await response.json();
-        const { token, role } = data;
+      const data = {
+        userName: username,
+        passWord: password,
+      };
+      const response = await UserService.login(data);
+
+      console.log(response);
+
+      // Check server response
+      if (response.status === 200) {
+        const { token, role } = response.data;
         localStorage.setItem('accessToken', token);
         localStorage.setItem('userRole', role);
 
-        console.log(role)
-        if (role === 'ADMIN') {
-          navigate('/books');
-        } else {
-          navigate('/hello');
-        }
+        console.log(role,token)
+        
+
+        dispatch(login(role))
+
+        navigate('/');
+
       } else {
         setErrorMessage('Đăng nhập không thành công.');
       }
@@ -45,11 +46,11 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
+    <div className="login-form-container">
       <h2>Login</h2>
-      {errorMessage && <div>{errorMessage}</div>}
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="form-group">
           <label htmlFor="username">Username:</label>
           <input
             type="text"
@@ -58,7 +59,7 @@ const LoginForm = () => {
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
             type="password"
@@ -67,7 +68,7 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className="login-button">Login</button>
       </form>
     </div>
   );

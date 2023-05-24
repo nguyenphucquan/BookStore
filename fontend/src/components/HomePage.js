@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
-import '../styles/Home.css';
+import '../styles/Home.Ath.css';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
   const [books, setBooks] = useState([]);
@@ -27,8 +28,17 @@ const HomePage = () => {
   };
 
   return (
+
     <div className="container">
+      <form class="d-flex">
+        <button class={'btn btn-outline-dark'} type="submit">
+        <i class="fa-solid fa-cart-shopping"></i>
+                  Cart
+          <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+        </button>
+      </form>
       <div className="row">
+
         <div className="col-lg-3">
           <h1 className="my-4">Shop Name</h1>
           <div className="list-group">
@@ -69,28 +79,28 @@ const HomePage = () => {
             <div className="row" key={index}>
               {row.map((book) => (
                 <div className="col-lg-4 col-md-6 mb-4" key={book.id}>
-                <div className="card h-100">
-                  <a href="#">
-                    <img id="image-preview" className="card-img" src={require(`../assets/images/${book.image}`)} alt='book-cover' />
-                  </a>
-                  <div className="card-body">
-                    <h4 className="card-title">
-                      <p className="card-text">{book.title}</p>
-                    </h4>
-                    <h5>$24.99</h5>
-                  </div>
-                  <div className="card-footer">
-                    <small className="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                  <div className="card h-100">
+                    <Link to={`/book-item/${book.id}`} >
+                      <img id="image-preview" className="card-img" src={require(`../assets/images/${book.image}`)} alt='book-cover' />
+                    </Link>
+                    <div className="card-body">
+                      <h4 className="card-title">
+                        <p className="card-text">{book.title}</p>
+                      </h4>
+                      <h5>24.99 VND</h5>
+                    </div>
+                    <div className="card-footer">
+                      <small className="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          ))}
         </div>
-      ))}
       </div>
-      </div>
-      </div>
-      );
-    };
-    
-    export default HomePage;
+    </div>
+  );
+};
+
+export default HomePage;

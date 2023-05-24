@@ -32,7 +32,7 @@ public class JWTController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody JWTAuthenticationRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassWord())
         );
 
         if (authentication.isAuthenticated()) {

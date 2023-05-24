@@ -10,12 +10,10 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.example.demo.jwt.JWTAuthenticationFilter;
@@ -25,16 +23,15 @@ import com.example.demo.jwt.JWTAuthenticationFilter;
 @EnableWebSecurity
 public class LibrarySecurityConfig {
 
-	private static final String[] SECURED_URLs = {};
+	private static final String[] SECURED_URLs_ADMIN = { "api/book/save/**","api/books/**","api/user" };
+	
+	private static final String[] SECURED_URLs_USER = {"api/user"};
 
-	private static final String[] UN_SECURED_URLs = { "/api/books/**", "/api/book/{id}", "/api/register", "/api/login","/api/books","api/book/save/**",
+	private static final String[] UN_SECURED_URLs = {"/api/login", "/api/register", "/api/books", "api/book/{id}",
 			"/logout" };
 
 	@Autowired
 	private JWTAuthenticationFilter authenticationFilter;
-
-	@Autowired
-	private UserDetailsService userDetailsService;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -56,13 +53,22 @@ public class LibrarySecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		// http.logout(logout -> logout.logoutUrl("http://localhost:8080/logout"));
+	     http.logout(logout -> logout.logoutUrl("http://localhost:8080/logout"));
 		http.sessionManagement(a -> a.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.formLogin(login->login.loginPage("http://localhost:3000/login"));
-		
-        return http.csrf().disable().authorizeHttpRequests().requestMatchers(UN_SECURED_URLs).permitAll().and()
-				.authorizeHttpRequests().requestMatchers(SECURED_URLs).hasAuthority("ADMIN").anyRequest()
+		http.formLogin(login->login.loginPage("http://localhost:3000/login"));
+	//	http.logout(logout -> logout.logoutUrl("/api/logout"));
+
+ 
+        return http.csrf().disable()
+        		.authorizeHttpRequests()
+        		.requestMatchers(UN_SECURED_URLs)
+        		.permitAll().and()
+        	//	.authorizeHttpRequests()
+        	//	.requestMatchers(SECURED_URLs_USER).hasAuthority("USER").and()
+				.authorizeHttpRequests()
+				.requestMatchers(SECURED_URLs_ADMIN).hasAuthority("ADMIN")
+				.anyRequest()
 				.authenticated().and().httpBasic().and().build();
 
 	}
