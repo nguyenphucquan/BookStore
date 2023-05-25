@@ -62,7 +62,7 @@ function Navbar() {
                                 {isLoggedIn && (
                                     <div>
                                         <li className="nav-item">
-                                            <a className="nav-link btn btn-link" href='http://localhost:8080/logout' onClick={logout}>
+                                            <a className="nav-link btn btn-link" href='http://localhost:8080/api/logout' onClick={logout}>
                                                 Logout
                                             </a>
                                         </li>

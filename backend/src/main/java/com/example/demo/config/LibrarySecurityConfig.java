@@ -23,12 +23,24 @@ import com.example.demo.jwt.JWTAuthenticationFilter;
 @EnableWebSecurity
 public class LibrarySecurityConfig {
 
-	private static final String[] SECURED_URLs_ADMIN = { "api/book/save/**","api/books/**","api/user" };
+	private static final String[] SECURED_URLs_ADMIN = {};
 	
-	private static final String[] SECURED_URLs_USER = {"api/user"};
+	private static final String[] SECURED_URLs_USER = {};
 
-	private static final String[] UN_SECURED_URLs = {"/api/login", "/api/register", "/api/books", "api/book/{id}",
-			"/logout" };
+	private static final String[] UN_SECURED_URLs = {"/api/login", 
+													"/api/register", 
+													 "/api/books", 
+													 "/api/book/**",
+													 "/logout",
+													 "/carts/create",
+													 "/carts/add/items",
+													 "/carts/get",
+													 "/carts/all",
+													 "/carts/**",
+													 "/carts/get/item",
+													 "api/users",
+													 "/cartitems/**",
+													 "api/book/save/**"};
 
 	@Autowired
 	private JWTAuthenticationFilter authenticationFilter;
@@ -53,11 +65,10 @@ public class LibrarySecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	     http.logout(logout -> logout.logoutUrl("http://localhost:8080/logout"));
 		http.sessionManagement(a -> a.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		http.formLogin(login->login.loginPage("http://localhost:3000/login"));
-	//	http.logout(logout -> logout.logoutUrl("/api/logout"));
+		http.logout(logout -> logout.logoutUrl("http://localhost:8080/api/logout"));
 
  
         return http.csrf().disable()

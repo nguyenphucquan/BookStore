@@ -32,7 +32,7 @@ const HomePage = () => {
     <div className="container">
       <form class="d-flex">
         <button class={'btn btn-outline-dark'} type="submit">
-        <i class="fa-solid fa-cart-shopping"></i>
+           <i class="fa-solid fa-cart-shopping"></i>
                   Cart
           <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
         </button>
@@ -87,7 +87,7 @@ const HomePage = () => {
                       <h4 className="card-title">
                         <p className="card-text">{book.title}</p>
                       </h4>
-                      <h5>24.99 VND</h5>
+                      <h5>{book.price} VND</h5>
                     </div>
                     <div className="card-footer">
                       <small className="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>

@@ -40,13 +40,13 @@ public class JWTController {
             String token = jwtService.generateToken(userDetails);
             String role = extractRoleFromUserDetails(userDetails);
 
+            
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
             response.put("role", role);
 
             return ResponseEntity.ok(response);
         }
-
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
     

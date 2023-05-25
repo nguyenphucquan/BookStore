@@ -112,22 +112,26 @@ function BookDetail() {
           </div>
           <hr />
           <div className='row'>
-          <div className="col-4">
+            <div className="col">
               <label className="form-label">Category</label>
               <select
-                  className="border-1 form-select"
-                  onChange={(e) => { setBook({ ...book, category: e.target.value }) }}
-                  disabled={!isEditable}
-                  defaultValue={book.category ? book.category : "default"}
+                className="border-1 form-select"
+                onChange={(e) => { setBook({ ...book, category: e.target.value }) }}
+                disabled={!isEditable}
+                defaultValue={book.category ? book.category : "default"}
               >
-                  <option disabled value="default">Select a category</option>
-                  <option value="Action" selected={book.category === "Action"}>Action</option>
-                  <option value="Comedy" selected={book.category === "Comedy"}>Comedy</option>
-                  <option value="Fantasy" selected={book.category === "Fantasy"}>Fantasy</option>
-                  <option value="Historical" selected={book.category === "Historical"}>Historical</option>
+                <option disabled value="default">Select a category</option>
+                <option value="Action" selected={book.category === "Action"}>Action</option>
+                <option value="Comedy" selected={book.category === "Comedy"}>Comedy</option>
+                <option value="Fantasy" selected={book.category === "Fantasy"}>Fantasy</option>
+                <option value="Historical" selected={book.category === "Historical"}>Historical</option>
               </select>
+            </div>
+            <div className="col">
+              <label className="form-label">Price:</label>
+              <input type="text" className="form-control" value={book.price || ""} readOnly={!isEditable} onChange={(e) => setBook({ ...book, price: e.target.value })} />
+            </div>
           </div>
-         </div>
         </div>
         <div className="col-lg-6">
           <div className="d-flex justify-content-center align-items-center h-100">

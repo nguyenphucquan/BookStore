@@ -1,14 +1,16 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.NaturalId;
+
+
+
 
 @Entity
 @Getter
@@ -23,6 +25,10 @@ public class User {
     private String email;
     private String passWord;
     private String roles;
+    
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+    
 	public Long getId() {
 		return id;
 	}

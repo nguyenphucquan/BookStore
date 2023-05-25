@@ -8,6 +8,7 @@ import BookDetail from './components/BookDetail';
 import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
 import BookItem from './components/BookItem';
+import ShoppingCart from './components/ShopingCart';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
           <Route path="/book/:id" element={<BookDetail />} />
           <Route path="/logout" element={<LogoutForm />} />
           <Route path="/book-item/:id" element={<BookItem />} />
-          
+          <Route path="/shoping-cart" element={<ShoppingCart />} />
           <Route path="/" element={<HomePage />} />
         </Routes>
       </div>

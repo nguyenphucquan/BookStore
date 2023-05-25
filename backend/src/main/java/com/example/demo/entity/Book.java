@@ -1,11 +1,13 @@
 package com.example.demo.entity;
 import java.sql.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,12 +39,18 @@ public class Book {
 
 	private int sold, page;
 	
+	private double price;
+	
 	@Column(columnDefinition = "nvarchar(255)")
 	private String image;
 
+    @OneToMany(mappedBy = "book")
+    private List<CartItem> cartItems;
 	
+
+
 	public Book(Long id, String title, String author, String category, String description, Date date, int sold,
-			int page, String image) {
+			int page, double price, String image, List<CartItem> cartItems) {
 		this.id = id;
 		this.title = title;
 		this.author = author;
@@ -51,7 +59,9 @@ public class Book {
 		this.date = date;
 		this.sold = sold;
 		this.page = page;
+		this.price = price;
 		this.image = image;
+		this.cartItems = cartItems;
 	}
 
 	public Book() {
@@ -128,6 +138,14 @@ public class Book {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	
 }
