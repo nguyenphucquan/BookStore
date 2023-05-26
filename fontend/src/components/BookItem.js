@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Rating from 'react-rating-stars-component';
 
 const BookItem = () => {
-  const { id } = useParams(); // Lấy thông tin id từ URL parameters
+  const { id } = useParams();
 
-  // Sử dụng id để lấy thông tin cuốn sách từ API hoặc state của trang
   const [book, setBook] = useState({});
-  const [quantity, setQuantity] = useState(1); // Trạng thái số lượng mặc định là 1
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -26,16 +26,19 @@ const BookItem = () => {
   if (!book) {
     return <div>Loading...</div>;
   }
-
-  const handleQuantityChange = (event) => {
-    setQuantity(event.target.value);
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
   };
-
+  const handleIncrement = () => {
+    setQuantity(quantity + 1);
+  };
   return (
-    <div className="container card" style={{ maxWidth: '1000px', background: '#9734' }}>
+    <div className="container card" style={{ maxWidth: '700px', background: '#9734' }}>
       <section className="py-5">
         <div className="container px-4 px-lg-5 my-5">
-          <div className="row gx-4 gx-lg-5 align-items-center">
+          <div className="row">
             <div className="col-md-4">
               <img
                 className="card-img-top mb-5 mb-md-0"
@@ -49,23 +52,36 @@ const BookItem = () => {
                 <h1 className="display-6 mb-2 fw-bolder">{book.title}</h1>
                 <h3 className="fs-6 mb-4 fw-light">by {book.author}</h3>
               </div>
-              <div className="mt-auto">
-                <div className="input-group input-group-sm mb-3"> {/* Thêm class input-group-sm để làm cho ô nhập nhỏ hơn */}
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={quantity}
-                    onChange={handleQuantityChange}
-                    min={1}
-                  />
+              <div className="row">
+                <div className="fs-5 mb-2">
+                  <span>{book.price} VND</span>
+                </div>
+
+                <div className="input-group input-group-sm mb-3">
+                  <button className="btn btn-outline-dark" type="button" onClick={handleDecrement}>
+                    -
+                  </button>
+                  <div>
+                    <input
+                      type="text"
+                      className="form-control text-center small-input"
+                      style={{ width: '50px' }}
+                      value={quantity}
+                    />
+                  </div>
+
+                  <button className="btn btn-outline-dark" type="button" onClick={handleIncrement}>
+                    +
+                  </button>
+                </div>
+
+                <div className="mt-auto">
                   <button className="btn btn-outline-dark" type="button">
                     <i className="bi-cart-fill me-1"></i>
                     Add to cart
                   </button>
                 </div>
-                <div className="fs-5 mb-2">
-                  <span>{book.price} VND</span>
-                </div>
+
               </div>
             </div>
           </div>
@@ -75,7 +91,7 @@ const BookItem = () => {
                 className="lead fs-6"
                 style={{
                   display: '-webkit-box',
-                  BoxOrient: 'vertical',
+                  WebkitBoxOrient: 'vertical',
                   WebkitLineClamp: 3,
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -83,6 +99,13 @@ const BookItem = () => {
               >
                 {book.description}
               </p>
+              <Rating
+              count={3} // Number of stars
+              size={24} // Size of each star
+             value={5} // Initial rating value (you can modify this based on your logic)
+              activeColor="#ffd700" // Color of active/filled stars
+              edit={true} // Set to 'true' if you want to allow user interaction
+            />
             </div>
           </div>
         </div>
@@ -90,4 +113,5 @@ const BookItem = () => {
     </div>
   );
 };
+
 export default BookItem;

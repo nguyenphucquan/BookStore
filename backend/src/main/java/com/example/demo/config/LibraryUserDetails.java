@@ -16,12 +16,13 @@ import lombok.Data;
 @Data
 public class LibraryUserDetails implements UserDetails{
 
-	
+	private Long userId;
     private String userName;
     private String password;
     private List<GrantedAuthority> authorities;
 
     public LibraryUserDetails(User user) {
+    	 this.userId = userId;
         userName = user.getUserName();
         password = user.getPassword();
         authorities = Arrays.stream(user.getRoles()
@@ -84,6 +85,14 @@ public class LibraryUserDetails implements UserDetails{
 
 	public void setAuthorities(List<GrantedAuthority> authorities) {
 		this.authorities = authorities;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	

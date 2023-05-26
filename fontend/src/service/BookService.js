@@ -5,7 +5,8 @@ const token = localStorage.getItem("accessToken")
 const createConfig = () => {
     return {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+           // 'Content-Type': 'multipart/formdata'
         }
     }
 }
@@ -25,7 +26,7 @@ const BookAPI = {
   },
   updateBook: (id, book) => {
     const url = `/book/save/${id}`;
-    return axiosClient.put(url, book,createConfig());
+    return axiosClient.put(url, book);
   },
   deleteBook: (id) => {
     const url = `/books/${id}`;

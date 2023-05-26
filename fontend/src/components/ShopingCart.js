@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function ShoppingCart() {
-    const [cartItems, setCartItems] = useState([]);
+    const [cart, setCart] = useState([]);
 
     useEffect(() => {
         // Gọi API để lấy thông tin giỏ hàng
@@ -14,12 +14,13 @@ function ShoppingCart() {
 
     const fetchCartItems = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/carts/get/items', {
+            const response = await axios.get('http://localhost:8080/carts/get', {
                 params: {
                     id: 3 // Thay YOUR_CART_ID bằng ID giỏ hàng của bạn
                 }
             });
-            setCartItems(response.data);
+            console.log(response.data)
+            setCart(response.data);
         } catch (error) {
             console.error('Error fetching cart items:', error);
         }
@@ -27,17 +28,19 @@ function ShoppingCart() {
 
     const removeCartItem = async (itemId) => {
         try {
-            await axios.delete('/carts/remove/items', {
+            await axios.delete('http://localhost:8080/carts/remove/items', {
                 params: {
                     cartId: 3, // Thay YOUR_CART_ID bằng ID giỏ hàng của bạn
                     itemId: 5
                 }
             });
             fetchCartItems();
+
         } catch (error) {
             console.error('Error removing item from cart:', error);
         }
     };
+  //  const subtotal = cart.items.reduce((total, x) => total + x.book.price * x.quantity, 0);
 
     // Render giao diện của giỏ hàng với các dữ liệu đã lấy từ API và các hàm thêm/xóa mục trong giỏ hàng
 
@@ -56,44 +59,42 @@ function ShoppingCart() {
                             </tr>
                         </thead>
                         <tbody>
-                            {cartItems.map((item) => (
-                                <tr key={item.book.id}>
+                            {cart.items && cart.items.map((x) => (
+                                <tr key={x.book.id}>
                                     <td className="col-sm-8 col-md-6">
                                         <div className="media">
                                             <a className="thumbnail pull-left" href="#">
                                                 <img
                                                     className="card-img-top mb-5 mb-md-0"
-                                                    src={item.book.image && require(`../assets/images/${item.book.image}`)}
+                                                    src={x.book.image && require(`../assets/images/${x.book.image}`)}
                                                     alt="book-cover"
-                                                    style={{ maxWidth: '100%', maxHeight: '100%' }}
+                                                    style={{ maxWidth: '50%', maxHeight: '50%' }}
                                                 />
                                             </a>
                                             <div className="media-body">
                                                 <h4 className="media-heading">
-                                                    <a href="#">{item.book.title}</a>
+                                                    <a href="#">{x.book.title}</a>
                                                 </h4>
                                                 <h5 className="media-heading">
                                                     {' '}
-                                                    by <a href="#">{item.author}</a>
+                                                    by <a href="#">{x.book.author}</a>
                                                 </h5>
-                                                <span>Status: </span>
-                                                <span className="text-success">
-                                                    <strong>In Stock</strong>
-                                                </span>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="col-sm-1 col-md-1" style={{ textAlign: 'center' }}>
-                                        <input type="email" className="form-control" id="exampleInputEmail1" value={item.quantity} />
+                                        <input type="email" className="form-control" id="exampleInputEmail1" value={x.quantity} />
                                     </td>
                                     <td className="col-sm-1 col-md-1 text-center">
-                                        <strong>{item.price}</strong>
+                                        <strong>{x.book.price} VND</strong>
                                     </td>
                                     <td className="col-sm-1 col-md-1 text-center">
-                                        <strong>{item.total}</strong>
+                                        <strong>
+                                            {x.book.price * x.quantity}
+                                        </strong>
                                     </td>
                                     <td className="col-sm-1 col-md-1">
-                                        <button type="button" className="btn btn-danger">
+                                        <button type="button" className="btn btn-danger" onClick={(removeCartItem)}>
                                             <span className="glyphicon glyphicon-remove"></span> Remove
                                         </button>
                                     </td>
@@ -108,7 +109,7 @@ function ShoppingCart() {
                                 </td>
                                 <td className="text-right">
                                     <h5>
-                                        <strong>$24.59</strong>
+                                        {cart.items&&cart.items.reduce((total, x) => total + x.book.price * x.quantity, 0)}
                                     </h5>
                                 </td>
                             </tr>

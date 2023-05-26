@@ -23,7 +23,7 @@ import com.example.demo.jwt.JWTAuthenticationFilter;
 @EnableWebSecurity
 public class LibrarySecurityConfig {
 
-	private static final String[] SECURED_URLs_ADMIN = {};
+	private static final String[] SECURED_URLs_ADMIN = {"api/book/save/**"};
 	
 	private static final String[] SECURED_URLs_USER = {};
 
@@ -40,7 +40,7 @@ public class LibrarySecurityConfig {
 													 "/carts/get/item",
 													 "api/users",
 													 "/cartitems/**",
-													 "api/book/save/**"};
+													 };
 
 	@Autowired
 	private JWTAuthenticationFilter authenticationFilter;

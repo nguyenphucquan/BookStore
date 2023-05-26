@@ -32,7 +32,7 @@ public class CartService {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-	public Cart createCart(Integer userId) {
+	public Cart createCart(Long userId) {
 		Optional<User> existingUser = userRepository.findById(userId);
 		Cart cart = new Cart();
 		cart.setUser(existingUser.orElseThrow(() -> new RuntimeException("User not found")));
@@ -106,7 +106,7 @@ public class CartService {
 		}
 	}
 
-	public Cart getCart(int userId) {
+	public Cart getCart(Long userId) {
 		return cartRepository.findByUserId(userId).orElseGet(() -> createCart(userId));
 	}
 

@@ -15,6 +15,8 @@ function Navbar() {
     const logout = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userRole');
+        localStorage.removeItem('idUser')
+        localStorage.removeItem('cart')
     };
 
     return (

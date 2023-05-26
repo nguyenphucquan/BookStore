@@ -25,16 +25,24 @@ const LoginForm = () => {
 
       // Check server response
       if (response.status === 200) {
-        const { token, role } = response.data;
+        const { token, role, idUser} = response.data;
+       // console(response.data)
+       // const cartString = JSON.stringify(cart);
+
+        //localStorage.setItem('cart', cartString); 
         localStorage.setItem('accessToken', token);
         localStorage.setItem('userRole', role);
-
-        console.log(role,token)
+        localStorage.setItem('idUser', idUser);
+       // localStorage.setItem('cart', cartString);
+        console.log(role)
+        console.log(token)
+        console.log(idUser)
+      //console.log(JSON.parse(cart))
         
 
         dispatch(login(role))
 
-        navigate('/');
+        //navigate('/home');
 
       } else {
         setErrorMessage('Đăng nhập không thành công.');

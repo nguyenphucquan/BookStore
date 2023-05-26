@@ -23,7 +23,7 @@ public class CartController {
 	private CartService cartService;
 
 	@PostMapping("/create")
-	public ResponseEntity<Cart> createCart(@RequestParam Integer user_id) {
+	public ResponseEntity<Cart> createCart(@RequestParam Long user_id) {
 		Cart cart = cartService.createCart(user_id);
 		return ResponseEntity.ok(cart);
 	}
@@ -49,7 +49,6 @@ public class CartController {
 			return ResponseEntity.notFound().build();
 		}
 		List<CartItem> cartItems = cartService.getCartItems(cart);
-		System.out.print(cartItems);
 		return ResponseEntity.ok(cartItems);
 		
 	}

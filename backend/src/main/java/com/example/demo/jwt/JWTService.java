@@ -35,9 +35,16 @@ public class JWTService {
     public String generateToken(UserDetails userDetails) {
         String username = userDetails.getUsername();
         List<String> roles = extractRolesFromUserDetails(userDetails);
+        
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", roles);
+     //   claims.put("idUser", idUser);
+        
         return tokenCreator(claims, username);
+    }
+
+    public Long extractIdUserFromToken(String token) {
+        return extractClaim(token, claims -> claims.get("idUser", Long.class));
     }
 
     public String extractUsernameFromToken(String token) {
