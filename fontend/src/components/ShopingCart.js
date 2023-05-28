@@ -16,7 +16,7 @@ function ShoppingCart() {
         try {
             const response = await axios.get('http://localhost:8080/carts/get', {
                 params: {
-                    id: 3 // Thay YOUR_CART_ID bằng ID giỏ hàng của bạn
+                    id: localStorage.getItem("idUser") // Thay YOUR_CART_ID bằng ID giỏ hàng của bạn
                 }
             });
             console.log(response.data)
@@ -30,8 +30,8 @@ function ShoppingCart() {
         try {
             await axios.delete('http://localhost:8080/carts/remove/items', {
                 params: {
-                    cartId: 3, // Thay YOUR_CART_ID bằng ID giỏ hàng của bạn
-                    itemId: 5
+                    cartId: localStorage.getItem("cart"), // Thay YOUR_CART_ID bằng ID giỏ hàng của bạn
+                    itemId: itemId
                 }
             });
             fetchCartItems();
@@ -68,7 +68,7 @@ function ShoppingCart() {
                                                     className="card-img-top mb-5 mb-md-0"
                                                     src={x.book.image && require(`../assets/images/${x.book.image}`)}
                                                     alt="book-cover"
-                                                    style={{ maxWidth: '50%', maxHeight: '50%' }}
+                                                    style={{ maxWidth: '75px', maxHeight: '75px%' }}
                                                 />
                                             </a>
                                             <div className="media-body">
@@ -94,7 +94,7 @@ function ShoppingCart() {
                                         </strong>
                                     </td>
                                     <td className="col-sm-1 col-md-1">
-                                        <button type="button" className="btn btn-danger" onClick={(removeCartItem)}>
+                                        <button type="button" className="btn btn-danger"onClick={() => removeCartItem(x.id)}>
                                             <span className="glyphicon glyphicon-remove"></span> Remove
                                         </button>
                                     </td>

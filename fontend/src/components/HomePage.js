@@ -39,10 +39,10 @@ const HomePage = () => {
     >
       <div className="container">
         <form className="d-flex">
-          <button className="btn btn-outline-dark" type="submit">
+          <Link to="/shoping-cart" className="btn btn-outline-dark">
             <i className="fa-solid fa-cart-shopping"></i> Cart
             <span className="badge bg-dark text-white ms-1 rounded-pill"></span>
-          </button>
+          </Link>
         </form>
 
         <div className="row">

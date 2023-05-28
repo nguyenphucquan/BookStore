@@ -25,7 +25,7 @@ const LoginForm = () => {
 
       // Check server response
       if (response.status === 200) {
-        const { token, role, idUser} = response.data;
+        const { token, role, idUser,cart} = response.data;
        // console(response.data)
        // const cartString = JSON.stringify(cart);
 
@@ -33,7 +33,7 @@ const LoginForm = () => {
         localStorage.setItem('accessToken', token);
         localStorage.setItem('userRole', role);
         localStorage.setItem('idUser', idUser);
-       // localStorage.setItem('cart', cartString);
+        localStorage.setItem('cart', cart.id);
         console.log(role)
         console.log(token)
         console.log(idUser)

@@ -6,7 +6,6 @@ function Navbar() {
     const [isLoading, setIsLoading] = useState(true);
     const { userRole, isLoggedIn } = useSelector(state => state.authReducer)
 
-
     useEffect(() => {
 
         setIsLoading(false);

@@ -34,8 +34,8 @@ public class CartController {
 	    return ResponseEntity.ok(carts);
 	}
 	@GetMapping("/get")
-	public ResponseEntity<Cart> getCartById(@RequestParam("id")Long id) {
-		Cart cart = cartService.getCartById(id);
+	public ResponseEntity<Cart> getCartById(@RequestParam("id")Long userId) {
+		Cart cart = cartService.getCart(userId);
 		if (cart == null) {
 			return ResponseEntity.notFound().build();
 		}

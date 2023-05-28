@@ -22,7 +22,7 @@ const BookAPI = {
   },
   createBook: (id, book) => {
     const url = `/book/save/${id}`;
-    return axiosClient.post(url, book,createConfig())
+    return axiosClient.post(url, book)
   },
   updateBook: (id, book) => {
     const url = `/book/save/${id}`;
