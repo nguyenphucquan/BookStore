@@ -1,12 +1,21 @@
-.card-img {
-  object-fit: cover;
-}
-.card {
+
+/* .card {
   transition: transform 0.3s;
 }
 
 .card:hover {
   transform: translateY(-5px);
+} */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+.product{
+  padding:30px;
+}
+.product-item{
+  padding:10px;
 }
 
 

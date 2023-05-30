@@ -1,14 +1,15 @@
 import axiosClient from "../api/axiosClient";
 
-const token = localStorage.getItem("accessToken")
 // const role = localStorage.getItem("userRole")
 const createConfig = () => {
-    return {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-           // 'Content-Type': 'multipart/formdata'
-        }
+  const token = localStorage.getItem("accessToken");
+
+  return {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      // 'Content-Type': 'multipart/formdata'
     }
+  }
 }
 const BookAPI = {
 
@@ -18,19 +19,21 @@ const BookAPI = {
   },
   getBook: (id) => {
     const url = `/books/${id}`;
-    return axiosClient.get(url);
+    return axiosClient.get(url, createConfig());
   },
   createBook: (id, book) => {
-    const url = `/book/save/${id}`;
-    return axiosClient.post(url, book)
+    const url = `/save/${id}`;
+    return axiosClient.post(url, book, createConfig())
   },
   updateBook: (id, book) => {
-    const url = `/book/save/${id}`;
-    return axiosClient.put(url, book);
+    const url = `/save/${id}`;
+
+    return axiosClient.put(url, book, createConfig());
   },
+  
   deleteBook: (id) => {
     const url = `/books/${id}`;
-    return axiosClient.delete(url,createConfig());
+    return axiosClient.delete(url, createConfig());
   },
   searchBooks: (searchTerm) => {
     const url = `/books?search=${searchTerm}`;

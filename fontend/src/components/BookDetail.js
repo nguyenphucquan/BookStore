@@ -26,9 +26,18 @@ function BookDetail() {
   };
   useEffect(() => {
     const fetchBook = async () => {
+      const token = localStorage.getItem("accessToken")
+
       try {
         if (id !== "-1") {
-          const response = await fetch(`http://localhost:8080/api/book/${id}`);
+          const response = await fetch(`http://localhost:8080/api/book/${id}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              // 'Content-Type': 'multipart/formdata'
+            }
+          });
+
+
           const data = await response.json();
 
           const formattedDate = formatDate(data.date);
@@ -139,7 +148,7 @@ function BookDetail() {
               <div className="card-body text-center">
                 <div className="mb-3">
                   <button className="btn btn-primary" onClick={handleUpload}>Upload Image</button>
-                  <input type="file" id="imageInput" style={{ display: "none" }} accept="image/*" onChange={handleImageUpload} />
+                  <input type="file" id="imageInput" style={{ display: "none" }} accept="image/*" readOnly={!isEditable} onChange={handleImageUpload} />
                 </div>
                 <div className="upload-preview">
                   {image === null && book.image && (

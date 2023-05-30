@@ -1,6 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
-import '../styles/Home.Ath.css';
 import { Link } from 'react-router-dom';
 
 const HomePage = () => {
@@ -20,92 +18,67 @@ const HomePage = () => {
     }
   };
 
-  const chunks = (arr, size) => {
-    const chunkedArr = [];
-    for (let i = 0; i < arr.length; i += size) {
-      chunkedArr.push(arr.slice(i, i + size));
-    }
-    return chunkedArr;
-  };
+  const defaultRating = 3; // Giá trị rating mặc định
 
   return (
-    <div
-      style={{
-        backgroundImage: '',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        minHeight: '100vh',
-      }}
-    >
-      <div className="container">
-        <form className="d-flex">
-          <Link to="/shoping-cart" className="btn btn-outline-dark">
-            <i className="fa-solid fa-cart-shopping"></i> Cart
-            <span className="badge bg-dark text-white ms-1 rounded-pill"></span>
-          </Link>
-        </form>
+    <>
+      <style>
+        {`
+          .card {
+            transition: transform 0.3s;
+          }
+          
+          .card:hover {
+            transform: translateY(-5px);
+          }
 
-        <div className="row">
-          <div className="col-lg-3">
-            <h1 className="my-4">Shop Name</h1>
-            <div className="list-group">
-              <a href="#" className="list-group-item">Category 1</a>
-              <a href="#" className="list-group-item">Category 2</a>
-              <a href="#" className="list-group-item">Category 3</a>
-            </div>
-          </div>
+          .rating {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+          }
 
-          <div className="col-lg-9">
-            <div id="carouselExampleIndicators" className="carousel slide my-4" data-ride="carousel">
-              <ol className="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-              </ol>
-              <div className="carousel-inner" role="listbox">
-                <div className="carousel-item active">
-                  <img className="d-block img-fluid" src="https://theme.hstatic.net/200000343865/1001052087/14/ms_banner_img5.jpg?v=45" alt="First slide" />
-                </div>
-                <div className="carousel-item">
-                  <img className="d-block img-fluid" src="https://theme.hstatic.net/200000343865/1001052087/14/ms_banner_img3.jpg?v=45" alt="Second slide" />
-                </div>
-                <div className="carousel-item">
-                  <img className="d-block img-fluid" src="https://cdn.egamebuy.com/images/info-direct-topup-games/one-piece-bounty-rush.jpg" alt="Third slide" />
-                </div>
-              </div>
-              <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span className="sr-only">Previous</span>
-              </a>
-              <a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                <span className="sr-only">Next</span>
-              </a>
-            </div>
-            {chunks(books, 3).map((row, index) => (
-              <div className="row" key={index}>
-                {row.map((book) => (
-                  <div className="col-lg-4 col-md-6 mb-4" key={book.id}>
-                    <div className="card h-100">
-                      <Link to={`/book-item/${book.id}`} >
-                        <img className="card-img-top" src={require(`../assets/images/${book.image}`)} alt="Book Cover" />
-                      </Link>
-                      <div className="card-body">
-                        <h5 className="card-title">{book.title}</h5>
-                        <h6 className="card-price">{book.price} VND</h6>
-                      </div>
-                      <div className="card-footer">
-                        <small className="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+          .rating i {
+            color: gold;
+            margin-right: 2px;
+          }
+        `}
+      </style>
+
+      <section className="product mt-3"> 
+        <div className="container-sm">
+          <div className="row">
+            {books.map((book, index) => (
+              <div
+                className={`col-xl-3 col-lg-5 col-md-6 col-sm-12 product-item`}
+                key={index}
+              >
+                <Link to={`/book-item/${book.id}`}>
+                  <div className="card">
+                    <img
+                      className="card-img-top img-fluid"
+                      src={require(`../assets/images/${book.image}`)}
+                      alt="Book Cover"
+                      style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">{book.title}</h5>
+                      <p className="card-text">{book.price.toLocaleString('vi-VN', { minimumFractionDigits: 0 })} đ</p>
+
+                      <div className="rating">
+                        {[...Array(defaultRating)].map((_, i) => (
+                          <i key={i} className="fas fa-star"></i>
+                        ))}
                       </div>
                     </div>
                   </div>
-                ))}
+                </Link>
               </div>
             ))}
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 

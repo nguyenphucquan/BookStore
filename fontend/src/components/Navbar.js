@@ -4,25 +4,24 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
     const [isLoading, setIsLoading] = useState(true);
-    const { userRole, isLoggedIn } = useSelector(state => state.authReducer)
+    const { userRole, isLoggedIn } = useSelector(state => state.authReducer);
 
     useEffect(() => {
-
         setIsLoading(false);
     }, []);
 
     const logout = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userRole');
-        localStorage.removeItem('idUser')
-        localStorage.removeItem('cart')
+        localStorage.removeItem('idUser');
+        localStorage.removeItem('cart');
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-gradient">
+        <nav className="navbar navbar-expand-lg navbar-light bg-gradient" style={{backgroundColor: "gainsboro"}} >
             <div className="container">
                 <Link className="navbar-brand" to="/">
-                    Start Bootstrap
+                    Book Store
                 </Link>
                 <button
                     className="navbar-toggler"
@@ -38,20 +37,22 @@ function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/">
+                            <Link className="nav-link" to="/trang-chu">
                                 Home
                             </Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/books">
-                                Books
-                            </Link>
-                        </li>
+                        {isLoggedIn && userRole === 'ADMIN' && ( // Kiểm tra isLoggedIn và userRole === 'ADMIN'
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/books">
+                                    Books
+                                </Link>
+                            </li>
+                        )}
                         {!isLoading && (
                             <>
                                 {isLoggedIn ? (
                                     <li className="nav-item">
-                                        <div className="nav-link">{userRole}</div>
+                                        <div className="nav-link">Hi {userRole}</div>
                                     </li>
                                 ) : (
                                     <li className="nav-item">

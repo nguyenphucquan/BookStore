@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserService from '../service/UserService';
 import '../styles/Login.css'; // Import the CSS file for styling
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/authReducer';
 
 const LoginForm = () => {
@@ -11,6 +11,14 @@ const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const isLoggedIn = useSelector(state => state.authReducer.isLoggedIn);
+
+  useEffect(() => {
+    // If user is already logged in, redirect to home page
+    if (isLoggedIn) {
+      navigate('/trang-chu');
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,24 +33,19 @@ const LoginForm = () => {
 
       // Check server response
       if (response.status === 200) {
-        const { token, role, idUser,cart} = response.data;
-       // console(response.data)
-       // const cartString = JSON.stringify(cart);
+        const { token, role, idUser, cart } = response.data;
 
-        //localStorage.setItem('cart', cartString); 
+        // Set local storage
         localStorage.setItem('accessToken', token);
         localStorage.setItem('userRole', role);
         localStorage.setItem('idUser', idUser);
         localStorage.setItem('cart', cart.id);
-        console.log(role)
-        console.log(token)
-        console.log(idUser)
-      //console.log(JSON.parse(cart))
-        
 
-        dispatch(login(role))
+        // Dispatch login action
+        dispatch(login(role));
 
-        //navigate('/home');
+        // Redirect to home page after login
+        navigate('/trang-chu');
 
       } else {
         setErrorMessage('Đăng nhập không thành công.');

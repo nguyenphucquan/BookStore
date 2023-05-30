@@ -59,7 +59,7 @@ public class BookController {
 		}
 	}
 	
-	@PostMapping("/book/save/{id}")
+	@PostMapping("/save/{id}")
 	public ResponseEntity<List<Book>> addBook(@RequestParam("book") String bookJson, @RequestParam("image") MultipartFile image) {
 	    try {
 	        // Chuyển đổi chuỗi JSON thành đối tượng Book
@@ -100,13 +100,8 @@ public class BookController {
 	    return fileName;
 	}
 
-//	@PostMapping("/book/save/{id}")
-//	public ResponseEntity<Book> createBook(@RequestBody Book book) {
-//		bookService.save(book);
-//		return ResponseEntity.status(HttpStatus.CREATED).body(book);
-//	}
 
-	@PutMapping("/book/save/{id}")
+	@PutMapping("/save/{id}")
 	public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestParam("book") String bookJson, @RequestParam(value = "image", required = false) MultipartFile image) {
 	    try {
 	        Book existingBook = bookService.findById(id);

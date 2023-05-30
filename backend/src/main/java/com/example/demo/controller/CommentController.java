@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +34,13 @@ public class CommentController {
 	@PostMapping("/comments/{bookId}/{idUser}")
 	public Comment postComment(@PathVariable String bookId, @PathVariable Long idUser, @ModelAttribute("comment")  String comment) {
 		Comment newComment = commentService.postComment(idUser, Long.valueOf(bookId), comment);
-		//System.out.print(comment.substring(1, comment.length() - 1));
 		return newComment;
+	}
+	@PutMapping("/comments/{commentId}")
+	public Comment editComment(@PathVariable String commentId, @RequestBody Comment comment) {
+	    String comments = comment.getComment();
+		Comment editedComment = commentService.editComment(Long.valueOf(commentId), comments);
+		return editedComment;
 	}
 
 	@DeleteMapping("/comments/{commentId}")

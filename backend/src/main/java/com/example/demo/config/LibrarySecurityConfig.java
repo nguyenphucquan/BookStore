@@ -23,25 +23,18 @@ import com.example.demo.jwt.JWTAuthenticationFilter;
 @EnableWebSecurity
 public class LibrarySecurityConfig {
 
-	private static final String[] SECURED_URLs_ADMIN = {};
+	private static final String[] SECURED_URLs_ADMIN = {"/api/save/**","/api/books/**"};
 	
-	private static final String[] SECURED_URLs_USER = {};
+	private static final String[] SECURED_URLs_USER = { "/carts/create", "/carts/add/items", "/cart/items/**"};
 
-	private static final String[] UN_SECURED_URLs = {"/api/login", 
-													"/api/register", 
-													 "/api/books", 
-													 "/api/book/**",
-													 "/logout",
-													 "/carts/create",
-													 "/carts/add/items",
+	private static final String[] UN_SECURED_URLs = {"/api/login",  
 													 "/carts/get",
-													 "/carts/all",
-													 "/carts/**",
-													 "/carts/get/item",
+													 "/api/register", 
+													 "/api/books", 
+													 "/logout",
 													 "api/users",
-													 "/cart/items/**",
-													 "api/book/save/**",
-													 "/api/comments/**"
+													 "/api/comments/**",
+													 "/api/book/**"
 													 };
 
 	@Autowired
@@ -54,7 +47,7 @@ public class LibrarySecurityConfig {
 
 	@Bean
 	public LibraryUserDetailsService userDetailsService() {
-		return new LibraryUserDetailsService();
+		return new LibraryUserDetailsService(); 
 	}
 
 	@Bean
@@ -75,10 +68,9 @@ public class LibrarySecurityConfig {
  
         return http.csrf().disable()
         		.authorizeHttpRequests()
-        		.requestMatchers(UN_SECURED_URLs)
-        		.permitAll().and()
-        	//	.authorizeHttpRequests()
-        	//	.requestMatchers(SECURED_URLs_USER).hasAuthority("USER").and()
+        		.requestMatchers(UN_SECURED_URLs).permitAll().and()
+				.authorizeHttpRequests()
+				.requestMatchers(SECURED_URLs_USER).hasAuthority("USER").and()
 				.authorizeHttpRequests()
 				.requestMatchers(SECURED_URLs_ADMIN).hasAuthority("ADMIN")
 				.anyRequest()

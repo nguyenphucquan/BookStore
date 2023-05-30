@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,19 @@ public class CommentService implements ICommentService{
 	@Override
 	public void deleteComment(Long commentId) {
 		commentRepository.deleteById(commentId);
+	}
+
+	public Comment editComment(Long commentId, String comment) {
+	    Optional<Comment> optionalComment = commentRepository.findById(commentId);
+	    if (optionalComment.isPresent()) {
+	        Comment existingComment = optionalComment.get();
+	        existingComment.setComment(comment);
+	        commentRepository.save(existingComment);
+	        return existingComment;
+	    } else {
+	        // Handle the case when the comment with the given commentId is not found.
+	        throw new IllegalArgumentException("Comment not found with ID: " + commentId);
+	    }
 	}
 
 
