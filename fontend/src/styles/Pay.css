@@ -1,0 +1,10 @@
+.payment-method-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .payment-method {
+    display: flex;
+    align-items: center;
+  }
+  

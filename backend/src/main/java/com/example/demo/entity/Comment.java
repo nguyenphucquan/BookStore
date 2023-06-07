@@ -32,13 +32,15 @@ public class Comment {
 	
 	private Date date;
 
+	private Integer rating;
 	
-	public Comment(Long id, User user, Book book, String comment, Date date) {
+	public Comment(Long id, User user, Book book, String comment, Date date,Integer rating) {
 		this.id = id;
 		this.user = user;
 		this.book = book;
 		this.comment = comment;
 		this.date = date;
+		this.rating = rating;
 	}
 	
 	public Comment() {
@@ -82,6 +84,14 @@ public class Comment {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Integer getRating() {
+		return rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
 	}
 	
 	

@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.example.demo.entity.Book;
+import com.example.demo.repository.BookRepository;
 import com.example.demo.service.IBookService;
 
 @CrossOrigin
@@ -40,6 +41,8 @@ import com.example.demo.service.IBookService;
 public class BookController {
 	@Autowired
 	private IBookService bookService;
+	@Autowired
+	private BookRepository bookRepository;
 	@Autowired
 	ObjectMapper objectMapper;
 
@@ -58,73 +61,89 @@ public class BookController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
-	@PostMapping("/save/{id}")
-	public ResponseEntity<List<Book>> addBook(@RequestParam("book") String bookJson, @RequestParam("image") MultipartFile image) {
-	    try {
-	        // Chuyển đổi chuỗi JSON thành đối tượng Book
-	        Book book = objectMapper.readValue(bookJson, Book.class);
-	        book.setId(null);
-
-	        // Lưu tệp ảnh và nhận đường dẫn ảnh
-	        if (!image.isEmpty()) {
-	            String imagePath = saveImage(image);
-	            book.setImage(imagePath);
-	        }
-	        // Lưu đối tượng Book
-	        bookService.save(book);
-
-	        // Trả về danh sách sách đã lưu
-	        List<Book> books = bookService.findAll();
-	        return ResponseEntity.ok(books);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	    }
-	}
 
 	private String saveImage(MultipartFile image) throws IOException {
-	    // Đường dẫn thư mục lưu trữ ảnh
-	    String saveDirectory = "D:\\BookStore\\fontend\\src\\assets\\images";
+		// Đường dẫn thư mục lưu trữ ảnh
+		String saveDirectory = "D:\\BookStore\\fontend\\src\\assets\\images";
 
-	    // Tạo tên tệp ảnh duy nhất
-	    String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
+		// Tạo tên tệp ảnh duy nhất
+		String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
 
-	    // Tạo đường dẫn tới tệp ảnh
-	    Path filePath = Paths.get(saveDirectory, fileName);
+		// Tạo đường dẫn tới tệp ảnh
+		Path filePath = Paths.get(saveDirectory, fileName);
 
-	    // Lưu tệp ảnh vào thư mục lưu trữ
-	    Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+		// Lưu tệp ảnh vào thư mục lưu trữ
+		Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-	    // Trả về đường dẫn tệp ảnh
-	    return fileName;
+		// Trả về đường dẫn tệp ảnh
+		return fileName;
 	}
 
+	@PostMapping("/save/{id}")
+	public ResponseEntity<?> addBook(@RequestParam(value = "book") String bookJson,
+			@RequestParam(value = "image", required = false) MultipartFile image) {
+		try {
+			// Chuyển đổi chuỗi JSON thành đối tượng Book
+			Book book = objectMapper.readValue(bookJson, Book.class);
+			book.setId(null);
+
+			// Kiểm tra xem đã tồn tại quyển sách có cùng tiêu đề và tác giả hay chưa
+			boolean exists = bookRepository.existsByTitleAndAuthor(book.getTitle(), book.getAuthor());
+			if (exists) {
+				return ResponseEntity.badRequest().body("Đã tồn tại một quyển sách có cùng tiêu đề và tác giả.");
+			}
+
+			// Lưu tệp ảnh và nhận đường dẫn ảnh (nếu có)
+			if (image != null && !image.isEmpty()) {
+				String imagePath = saveImage(image);
+				book.setImage(imagePath);
+			}
+
+			// Lưu đối tượng Book
+			bookService.save(book);
+
+			// Trả về danh sách sách đã lưu
+			List<Book> books = bookService.findAll();
+			return ResponseEntity.ok(books);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
 
 	@PutMapping("/save/{id}")
-	public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestParam("book") String bookJson, @RequestParam(value = "image", required = false) MultipartFile image) {
-	    try {
-	        Book existingBook = bookService.findById(id);
-	        if (existingBook == null) {
-	            return ResponseEntity.notFound().build();
-	        }
+	public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestParam("book") String bookJson,
+			@RequestParam(value = "image", required = false) MultipartFile image) {
+		try {
+			Book existingBook = bookService.findById(id);
+			if (existingBook == null) {
+				return ResponseEntity.notFound().build();
+			}
 
-	        Book book = objectMapper.readValue(bookJson, Book.class);
-	        book.setId(existingBook.getId());
+			Book book = objectMapper.readValue(bookJson, Book.class);
+			book.setId(existingBook.getId());
 
-	        if (image != null && !image.isEmpty()) {
-	            String imagePath = saveImage(image);
-	            book.setImage(imagePath);
-	        }
+			if (image != null && !image.isEmpty()) {
+				String imagePath = saveImage(image);
+				book.setImage(imagePath);
+			}
 
-	        bookService.save(book);
-	        return ResponseEntity.ok(book);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	    }
+			// Kiểm tra xem đã tồn tại quyển sách có cùng tiêu đề và tác giả hay chưa
+			boolean exists = bookRepository.existsByTitleAndAuthor(book.getTitle(), book.getAuthor());
+			if (exists && (!existingBook.getTitle().equals(book.getTitle())
+					|| !existingBook.getAuthor().equals(book.getAuthor()))) {
+				return ResponseEntity.badRequest().body("Đã tồn tại một quyển sách có cùng tiêu đề và tác giả.");
+			}
+
+			// Lưu đối tượng Book
+			bookService.save(book);
+			return ResponseEntity.ok(book);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
-	
+
 	@DeleteMapping("/books/{id}")
 	public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
 		Book existingBook = bookService.findById(id);

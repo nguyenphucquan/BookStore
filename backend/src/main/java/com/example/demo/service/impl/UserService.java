@@ -24,7 +24,20 @@ public class UserService implements IUserService {
 
     @Override
     public User add(User user) {
-        user.setPassWord(passwordEncoder.encode(user.getPassword()));
+        // Check if the username already exists
+        if (userRepository.existsByUserName(user.getUserName())) {
+            throw new IllegalArgumentException("Username already exists.");
+        }
+        
+        if (user.getRoles() == null) {
+            user.setRoles("USER");
+        }
+        
+        // Encode the user's password
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassWord(encodedPassword);
+
+        // Save the user to the repository
         return userRepository.save(user);
     }
 

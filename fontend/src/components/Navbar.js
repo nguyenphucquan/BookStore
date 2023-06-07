@@ -1,24 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 function Navbar() {
     const [isLoading, setIsLoading] = useState(true);
     const { userRole, isLoggedIn } = useSelector(state => state.authReducer);
+    const cartItems = useSelector(state => state.cart.cartItems);
+    const cartItemCount = cartItems.length;
 
     useEffect(() => {
         setIsLoading(false);
     }, []);
 
-    const logout = () => {
+    const handleLogout = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userRole');
         localStorage.removeItem('idUser');
-        localStorage.removeItem('cart');
+        localStorage.removeItem('cartid');
+        localStorage.removeItem('cartItems');
+        localStorage.removeItem('username');
+
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-gradient" style={{backgroundColor: "gainsboro"}} >
+        <nav className="navbar navbar-expand-lg navbar-light bg-gradient" style={{ backgroundColor: "gainsboro" }}>
+            <form className="d-flex">
+                <NavLink to="/shoping-cart" className="btn btn-outline-dark" activeClassName="active">
+                    <i className="fa-solid fa-cart-shopping"></i>
+                    Cart
+                    <span className="badge bg-danger text-white ms-1 rounded-pill">{cartItemCount}</span>
+                </NavLink>
+            </form>
             <div className="container">
                 <Link className="navbar-brand" to="/">
                     Book Store
@@ -38,10 +50,10 @@ function Navbar() {
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item">
                             <Link className="nav-link" to="/trang-chu">
-                                Home
+                                Trang Chủ
                             </Link>
                         </li>
-                        {isLoggedIn && userRole === 'ADMIN' && ( // Kiểm tra isLoggedIn và userRole === 'ADMIN'
+                        {isLoggedIn && userRole === 'ADMIN' && (
                             <li className="nav-item">
                                 <Link className="nav-link" to="/books">
                                     Books
@@ -52,20 +64,28 @@ function Navbar() {
                             <>
                                 {isLoggedIn ? (
                                     <li className="nav-item">
-                                        <div className="nav-link">Hi {userRole}</div>
+                                        <div className="nav-link">Xin chào {localStorage.getItem('username')}</div>
                                     </li>
                                 ) : (
-                                    <li className="nav-item">
-                                        <Link className="nav-link" to="/login">
-                                            Login
-                                        </Link>
-                                    </li>
+                                    <>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="/login">
+                                                Đăng Nhập
+                                            </Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <NavLink className="nav-link" to="/dang-ky">
+                                                Đăng Ký
+                                            </NavLink>
+                                        </li>
+                                    </>
+
                                 )}
                                 {isLoggedIn && (
                                     <div>
                                         <li className="nav-item">
-                                            <a className="nav-link btn btn-link" href='http://localhost:8080/api/logout' onClick={logout}>
-                                                Logout
+                                            <a className="nav-link btn btn-link" href='http://localhost:8080/api/logout' onClick={handleLogout}>
+                                                Thoát
                                             </a>
                                         </li>
                                     </div>

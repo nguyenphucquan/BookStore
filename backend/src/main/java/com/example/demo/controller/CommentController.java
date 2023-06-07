@@ -32,10 +32,12 @@ public class CommentController {
 	}
 
 	@PostMapping("/comments/{bookId}/{idUser}")
-	public Comment postComment(@PathVariable String bookId, @PathVariable Long idUser, @ModelAttribute("comment")  String comment) {
-		Comment newComment = commentService.postComment(idUser, Long.valueOf(bookId), comment);
+	public Comment postComment(@PathVariable String bookId, @PathVariable String idUser, @RequestBody Comment comment) {
+		Comment newComment = commentService.postComment(Long.valueOf(idUser), Long.valueOf(bookId), comment.getComment(),comment.getRating());
 		return newComment;
 	}
+	
+	
 	@PutMapping("/comments/{commentId}")
 	public Comment editComment(@PathVariable String commentId, @RequestBody Comment comment) {
 	    String comments = comment.getComment();

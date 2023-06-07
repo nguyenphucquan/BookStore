@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +45,9 @@ public class CartService {
 	}
 
 	public List<CartItem> getCartItems(Cart cart) {
+		Hibernate.initialize(cart.getItems());
 		return cart.getItems();
 	}
-
 	public String addCartItem(long cartId, Long bookId, int quantity) {
 		Optional<Cart> optionalCart = cartRepository.findById(cartId);
 		Optional<Book> optionalBook = bookRepository.findById(bookId);

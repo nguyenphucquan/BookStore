@@ -25,7 +25,7 @@ public class LibrarySecurityConfig {
 
 	private static final String[] SECURED_URLs_ADMIN = {"/api/save/**","/api/books/**"};
 	
-	private static final String[] SECURED_URLs_USER = { "/carts/create", "/carts/add/items", "/cart/items/**"};
+	private static final String[] SECURED_URLs_USER = { "/carts/create", "/carts/add/items"};
 
 	private static final String[] UN_SECURED_URLs = {"/api/login",  
 													 "/carts/get",
@@ -34,7 +34,9 @@ public class LibrarySecurityConfig {
 													 "/logout",
 													 "api/users",
 													 "/api/comments/**",
-													 "/api/book/**"
+													 "/api/book/**", "/cart/items/**",
+													 "/carts/remove/items",
+													 "/orders/checkout"
 													 };
 
 	@Autowired

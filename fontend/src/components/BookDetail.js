@@ -59,96 +59,102 @@ function BookDetail() {
         setIsEditable(true);
         return;
       } else {
+        const confirmed = window.confirm("Bạn có muốn lưu lại cuốn sách không?");
+        if (!confirmed) {
+          return;
+        }
+
         const formData = new FormData();
-        if (image !== null) formData.append('image', image);
+        if (image !== null) {
+          formData.append('image', image);
+        } else {
+          formData.append('image', null); // Hoặc giá trị mặc định khác tùy thuộc vào yêu cầu của server
+        }
         formData.append('book', JSON.stringify(book));
 
         if (id === "-1") {
           // Tạo sách mới
           const response = await BookAPI.createBook(id, formData);
-          console.log(response.status)
           if (response.status === 200) {
             console.log("Book created successfully.");
-          } else {
-            console.error("Failed to create book.");
           }
         } else {
           // Cập nhật sách đã tồn tại
           const response = await BookAPI.updateBook(id, formData);
           if (response.status === 200) {
             console.log("Book updated successfully.");
-          } else {
-            console.error("Failed to update book.");
           }
         }
       }
       setIsEditable(false);
     } catch (error) {
-      console.error("Error saving book:", error);
-      alert("Failed to save book.");
+
+      alert("Đã tồn tại một quyển sách có cùng tiêu đề và tác giả.");
+
     }
   };
+
   return (
     <div className="container">
       <h1 className="mb-4">{id < 0 ? "New Book" : `Book ${id}`}</h1>
-      <div className="row">
-        <div className="col-lg-6">
-          <div className="row mb-3">
-            <div className="col">
-              <label className="form-label">Title:</label>
-              <input type="text" className="form-control" value={book.title || ""} readOnly={!isEditable} onChange={(e) => setBook({ ...book, title: e.target.value })} />
+      <form onSubmit={handleSave}>
+        <div className="row">
+          <div className="col-lg-6">
+            <div className="row mb-3">
+              <div className="col">
+                <label className="form-label">Tên :</label>
+                <input type="text" className="form-control" value={book.title || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, title: e.target.value })} required />
+              </div>
+              <div className="col">
+                <label className="form-label">Tác giả:</label>
+                <input type="text" className="form-control" value={book.author || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, author: e.target.value })} required />
+              </div>
             </div>
-            <div className="col">
-              <label className="form-label">Author:</label>
-              <input type="text" className="form-control" value={book.author || ""} readOnly={!isEditable} onChange={(e) => setBook({ ...book, author: e.target.value })} />
+            <hr />
+            <div className="mb-3">
+              <label className="form-label">Mô tả:</label>
+              <textarea className="form-control" rows="4" value={book.description || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, description: e.target.value })}></textarea>
+            </div>
+            <hr />
+            <div className="row mb-3">
+              <div className="col">
+                <label className="form-label">Ngày phát hành:</label>
+                <input type="date" className="form-control" value={book.date || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, date: e.target.value })} required/>
+              </div>
+              <div className="col">
+                <label className="form-label">Số trang:</label>
+                <input type="text" className="form-control" value={book.page || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, page: e.target.value })} />
+              </div>
+            </div>
+            <hr />
+            <div className='row'>
+              <div className="col">
+                <label className="form-label">Thể loại</label>
+                <select
+                  className="border-1 form-select"
+                  onChange={(e) => { setBook({ ...book, category: e.target.value }) }}
+                  disabled={!isEditable}
+                  defaultValue={book.category ? book.category : "default"}
+                >
+                  <option disabled value="default">Thể loại</option>
+                  <option value="Hài" selected={book.category === "Hài"}>Hài</option>
+                  <option value="Hành động" selected={book.category === "Hành động"}>Hành động</option>
+                  <option value="Trinh thám" selected={book.category === "Trinh thám"}>Trinh thám</option>
+                  <option value="Khoa học" selected={book.category === "Khoa học"}>Khoa học</option>
+                </select>
+              </div>
+              <div className="col">
+                <label className="form-label">Giá:</label>
+                <input type="text" className="form-control" value={book.price || ""} readOnly={!isEditable} onChange={(e) => setBook({ ...book, price: e.target.value })} />
+              </div>
             </div>
           </div>
-          <hr />
-          <div className="mb-3">
-            <label className="form-label">Description:</label>
-            <textarea className="form-control" rows="4" value={book.description || ""} readOnly={!isEditable} onChange={(e) => setBook({ ...book, description: e.target.value })}></textarea>
-          </div>
-          <hr />
-          <div className="row mb-3">
-            <div className="col">
-              <label className="form-label">Date Established:</label>
-              <input type="date" className="form-control" value={book.date || ""} readOnly={!isEditable} onChange={(e) => setBook({ ...book, date: e.target.value })} />
-            </div>
-            <div className="col">
-              <label className="form-label">Page Count:</label>
-              <input type="text" className="form-control" value={book.page || ""} readOnly={!isEditable} onChange={(e) => setBook({ ...book, page: e.target.value })} />
-            </div>
-          </div>
-          <hr />
-          <div className='row'>
-            <div className="col">
-              <label className="form-label">Category</label>
-              <select
-                className="border-1 form-select"
-                onChange={(e) => { setBook({ ...book, category: e.target.value }) }}
-                disabled={!isEditable}
-                defaultValue={book.category ? book.category : "default"}
-              >
-                <option disabled value="default">Select a category</option>
-                <option value="Action" selected={book.category === "Action"}>Action</option>
-                <option value="Comedy" selected={book.category === "Comedy"}>Comedy</option>
-                <option value="Fantasy" selected={book.category === "Fantasy"}>Fantasy</option>
-                <option value="Historical" selected={book.category === "Historical"}>Historical</option>
-              </select>
-            </div>
-            <div className="col">
-              <label className="form-label">Price:</label>
-              <input type="text" className="form-control" value={book.price || ""} readOnly={!isEditable} onChange={(e) => setBook({ ...book, price: e.target.value })} />
-            </div>
-          </div>
-        </div>
-        <div className="col-lg-6">
-          <div className="d-flex justify-content-center align-items-center h-100">
+          <div className="col-lg-6">
             <div className="card">
               <div className="card-body text-center">
                 <div className="mb-3">
-                  <button className="btn btn-primary" onClick={handleUpload}>Upload Image</button>
-                  <input type="file" id="imageInput" style={{ display: "none" }} accept="image/*" readOnly={!isEditable} onChange={handleImageUpload} />
+                  <button className="btn btn-primary" onClick={handleUpload} disabled={!isEditable}>Upload Image</button>
+                  <input type="file" id="imageInput" style={{ display: "none" }} accept="image/*" onChange={handleImageUpload} />
                 </div>
                 <div className="upload-preview">
                   {image === null && book.image && (
@@ -172,28 +178,27 @@ function BookDetail() {
             </div>
           </div>
         </div>
-      </div>
-      <div className="row mt-5" style={{ borderTop: "2px solid" }}>
-        <div className="col"></div>
-        <div className="col"></div>
-        <div className="col">
-          {id === "-1" ? (
-            <button className="btn btn-primary" onClick={handleSave}>
-              Add
-            </button>
-          ) : isEditable ? (
-            <button className="btn btn-primary" onClick={handleSave}>
-              Save
-            </button>
-          ) : (
-            <button className="btn btn-primary" onClick={handleEdit}>
-              Edit
-            </button>
-          )}
+        <div className="row mt-5" style={{ borderTop: "2px solid" }}>
+          <div className="col"></div>
+          <div className="col"></div>
+          <div className="col mt-1">
+            {id === "-1" ? (
+              <button className="btn btn-primary" type="submit" disabled={!isEditable}>
+                Add
+              </button>
+            ) : isEditable ? (
+              <button className="btn btn-primary" type="submit" disabled={!isEditable}>
+                Save
+              </button>
+            ) : (
+              <button className="btn btn-primary" onClick={handleEdit}>
+                Edit
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      </form>
     </div>
-
   );
 }
 

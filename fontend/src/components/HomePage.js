@@ -18,7 +18,6 @@ const HomePage = () => {
     }
   };
 
-  const defaultRating = 3; // Giá trị rating mặc định
 
   return (
     <>
@@ -57,19 +56,13 @@ const HomePage = () => {
                   <div className="card">
                     <img
                       className="card-img-top img-fluid"
-                      src={require(`../assets/images/${book.image}`)}
+                      src={book.image && require(`../assets/images/${book.image}`)}
                       alt="Book Cover"
                       style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                     />
                     <div className="card-body">
                       <h5 className="card-title">{book.title}</h5>
                       <p className="card-text">{book.price.toLocaleString('vi-VN', { minimumFractionDigits: 0 })} đ</p>
-
-                      <div className="rating">
-                        {[...Array(defaultRating)].map((_, i) => (
-                          <i key={i} className="fas fa-star"></i>
-                        ))}
-                      </div>
                     </div>
                   </div>
                 </Link>

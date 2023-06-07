@@ -1,6 +1,7 @@
 .login-form-container {
     width: 300px;
-    margin: 0 auto;
+    margin:  auto;
+    margin-top: 20vh;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -52,4 +53,4 @@
   .login-button:active {
     background-color: #3e8e41;
   }
-  
+

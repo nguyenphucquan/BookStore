@@ -1,10 +1,12 @@
 package com.example.demo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,11 +22,11 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    @JsonIgnore // bắt buộc nhé 4h 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cart_id", nullable = false)
+    @JsonBackReference
     private Cart cart;
-
+    
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;

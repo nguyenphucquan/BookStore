@@ -10,6 +10,8 @@ import HomePage from './components/HomePage';
 import BookItem from './components/BookItem';
 import ShoppingCart from './components/ShopingCart';
 import { useSelector } from 'react-redux';
+import RegisterPage from './components/RegisterPage';
+import PaymentPage from './components/PaymentPage';
 
 function App() {
   const { userRole, isLoggedIn } = useSelector(state => state.authReducer);
@@ -31,7 +33,9 @@ function App() {
         />
         <Route path="/book/:id" element={<BookDetail />} />
         <Route path="/logout" element={<LogoutForm />} />
+        <Route path="/dang-ky" element={<RegisterPage />} />
         <Route path="/book-item/:id" element={<BookItem />} />
+        <Route path="/pay" element={<PaymentPage />} />
         <Route path="/shoping-cart" element={<ShoppingCart />} />
         <Route path="/trang-chu" element={<HomePage />} />
       </Routes>

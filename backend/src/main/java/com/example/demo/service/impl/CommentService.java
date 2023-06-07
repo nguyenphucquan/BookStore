@@ -7,7 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Book;
 import com.example.demo.entity.Comment;
+import com.example.demo.entity.User;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.UserRepository;
@@ -29,16 +31,27 @@ public class CommentService implements ICommentService{
 	public List<Comment> findCommentsByBookId(Long bookId) {
 		return commentRepository.findByBookId(bookId);
 	}
-
+	
 	@Override
-	public Comment postComment(Long userId, Long bookId, String comment) {
-		java.util.Date utilDate = java.util.Calendar.getInstance().getTime();
-		Date sqlDate = new Date(utilDate.getTime());
-		Comment newComment = new Comment(null, userRepository.findById(userId).get(),
-				bookRepository.findById(bookId).get(), comment, sqlDate);
-		commentRepository.save(newComment);
-		return newComment;
+	public Comment postComment(Long userId, Long bookId, String comment, int ratingValue) {
+	    java.util.Date utilDate = java.util.Calendar.getInstance().getTime();
+	    Date sqlDate = new Date(utilDate.getTime());
+	    
+	    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+	    Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book ID"));
+	    
+	    Comment newComment = new Comment();
+	    newComment.setUser(user);
+	    newComment.setBook(book);
+	    newComment.setComment(comment);
+	    newComment.setDate(sqlDate);
+	    newComment.setRating(ratingValue);
+	    
+	    commentRepository.save(newComment);
+	    
+	    return newComment;
 	}
+
 
 	@Override
 	public void deleteComment(Long commentId) {
