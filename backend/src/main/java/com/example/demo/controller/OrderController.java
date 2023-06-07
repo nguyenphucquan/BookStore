@@ -27,7 +27,7 @@ public class OrderController {
     @PostMapping("/checkout")
     public ResponseEntity<String> processCheckout(@RequestParam Long cartId,
             @RequestBody Order order) {
-        orderService.placeOrder(cartId, order.getAddress());
+        orderService.placeOrder(cartId, order);
         return ResponseEntity.ok("checkout successful");
     }
 

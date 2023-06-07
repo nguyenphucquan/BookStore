@@ -101,10 +101,10 @@ function ShoppingCart() {
                                             <input className="form-control" style={{ width: '50px' }} value={x.quantity} />
                                         </td>
                                         <td className="col-sm-1 col-md-1 text-center">
-                                            <strong>{x.book.price}</strong>
+                                            <strong>{x.book.price} đ</strong>
                                         </td>
                                         <td className="col-sm-1 col-md-1 text-center">
-                                            <strong>{x.book.price * x.quantity}</strong>
+                                            <strong>{x.book.price * x.quantity} đ</strong>
                                         </td>
                                         <td className="col-sm-1 col-md-1">
                                             <button type="button" className="btn btn-danger" onClick={() => removeCartItem(x.id, x.book.id)}>
@@ -121,7 +121,7 @@ function ShoppingCart() {
                                     <h5>Tổng tiền</h5>
                                 </td>
                                 <td className="col-sm-3 col-md-2 text-right">
-                                    <h5>{cart.items && cart.items.reduce((total, x) => total + x.book.price * x.quantity, 0)}</h5>
+                                    <h5>{cart.items && cart.items.reduce((total, x) => total + x.book.price * x.quantity, 0)} đ</h5>
                                 </td>
                                 <td className="col-sm-3 col-md-1"></td>
                             </tr>
@@ -130,9 +130,10 @@ function ShoppingCart() {
                                 <td className="col-sm-3 col-md-2"></td>
                                 <td className="col-sm-3 col-md-2"></td>
                                 <td>
-                                    <button type="button" className="btn btn-default">
+                                    <Link to="/trang-chu" className="btn btn-default">
                                         <span className="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
-                                    </button>
+                                    </Link>
+
                                 </td>
                                 <td>
                                     <button className="btn btn-success" onClick={handleCheckout}>

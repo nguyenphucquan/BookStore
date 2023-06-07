@@ -36,7 +36,7 @@ public class OrderService {
     @Autowired
     private UserRepository userRepository;
     @Transactional
-    public Order placeOrder(Long cartId,String address) {
+    public Order placeOrder(Long cartId,Order order) {
         // Lấy thông tin giỏ hàng từ cartId
         Optional<Cart> optionalCart = cartRepository.findById(cartId);
         if (!optionalCart.isPresent()) {
@@ -45,12 +45,9 @@ public class OrderService {
         Cart cart = optionalCart.get();
         List<CartItem> cartItems = cart.getItems();
 
-        // Tạo một đối tượng Order mới
-        Order order = new Order();
         order.setUser(cart.getUser());
         order.setOrderDate(LocalDate.now());
         order.setPayment(PaymentMethod.CASH_ON_DELIVERY);
-        order.setAddress(address);
         order = orderRepository.save(order);
 
         // Tạo danh sách các OrderItem và tính giá cho từng mục

@@ -17,7 +17,7 @@ function Navbar() {
         localStorage.removeItem('userRole');
         localStorage.removeItem('idUser');
         localStorage.removeItem('cartid');
-        localStorage.removeItem('cartItems');
+        localStorage.removeItem('x');
         localStorage.removeItem('username');
 
     };
@@ -25,16 +25,19 @@ function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-gradient" style={{ backgroundColor: "gainsboro" }}>
             <form className="d-flex">
-                <NavLink to="/shoping-cart" className="btn btn-outline-dark" activeClassName="active">
-                    <i className="fa-solid fa-cart-shopping"></i>
-                    Cart
-                    <span className="badge bg-danger text-white ms-1 rounded-pill">{cartItemCount}</span>
-                </NavLink>
+                {userRole !== 'ADMIN' && (
+                    <NavLink to="/shoping-cart" className="btn btn-outline-dark" activeClassName="active">
+                        <i className="fa-solid fa-cart-shopping"></i>
+                        Cart
+                        <span className="badge bg-danger text-white ms-1 rounded-pill">{cartItemCount}</span>
+                    </NavLink>
+                )}
             </form>
             <div className="container">
-                <Link className="navbar-brand" to="/">
+                <Link className="navbar-brand" style={{ fontWeight: 'bold', fontSize: '1.2em' }}>
                     Book Store
                 </Link>
+
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -55,7 +58,7 @@ function Navbar() {
                         </li>
                         {isLoggedIn && userRole === 'ADMIN' && (
                             <li className="nav-item">
-                                <Link className="nav-link" to="/books">
+                                <Link className="nav-link" to="/admin">
                                     Books
                                 </Link>
                             </li>

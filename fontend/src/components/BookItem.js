@@ -232,8 +232,18 @@ const BookItem = () => {
                 <span className="ms-2">
                   ({comments.length} {comments.length === 1 ? 'đánh giá' : 'đánh giá'})
                 </span>
-              </div>
+                {' | '}
+                <div className="daban">
+                  Đã bán: {book.sold}
+                </div>
 
+              </div>
+              <div className="row mt-2">
+                {book && book.price && (
+                  <h2 style={{ color: 'red' }}>{book.price.toLocaleString('vi-VN', { minimumFractionDigits: 0 })}đ</h2>
+                )}
+
+              </div>
               <div className="row">
                 <ul className="list-unstyled text-left">
                   <li>

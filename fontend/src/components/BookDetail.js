@@ -13,7 +13,8 @@ function BookDetail() {
     setImage(selectedImage);
   };
 
-  const handleUpload = () => {
+  const handleUpload = (e) => {
+    e.preventDefault();
     document.getElementById("imageInput").click();
   };
 
@@ -54,7 +55,7 @@ function BookDetail() {
   };
   const handleSave = async (e) => {
     try {
-      if (!isEditable) {
+      if (id !== "-1" && !isEditable) {
         e.preventDefault();
         setIsEditable(true);
         return;
@@ -201,5 +202,4 @@ function BookDetail() {
     </div>
   );
 }
-
 export default BookDetail;

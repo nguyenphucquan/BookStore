@@ -41,7 +41,18 @@ public class Order {
 
     private String address;
 
-    @Column(name = "order_date", nullable = false)
+    private String sdt;
+    
+    private String hovaten;
+    
+    public String getHovaten() {
+		return hovaten;
+	}
+	public void setHovaten(String hovaten) {
+		this.hovaten = hovaten;
+	}
+
+	@Column(name = "order_date", nullable = false)
     private LocalDate orderDate;
 
     @Column(name = "total_amount", nullable = false)
@@ -108,6 +119,12 @@ public class Order {
 
 	public void setTotalAmount(double totalAmount) {
 		this.totalAmount = totalAmount;
+	}
+	public String getSdt() {
+		return sdt;
+	}
+	public void setSdt(String sdt) {
+		this.sdt = sdt;
 	}
 
 }

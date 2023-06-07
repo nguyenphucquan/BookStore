@@ -7,6 +7,11 @@ const RegisterPage = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
     const [validEmail, setValidEmail] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleCheckboxChange = () => {
+        setShowPassword(!showPassword);
+    };
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
@@ -148,13 +153,12 @@ const RegisterPage = () => {
                         <p style={{ color: 'red' }}>Địa chỉ email không hợp lệ.</p>
                     )}
                 </div>
-
                 <div style={styles.formGroup}>
                     <label htmlFor="passWord" style={styles.label}>
                         Mật khẩu:
                     </label>
                     <input
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         id="passWord"
                         name="passWord"
                         value={passWord}
@@ -162,6 +166,15 @@ const RegisterPage = () => {
                         required
                         style={styles.input}
                     />
+
+                    <input
+                        type="checkbox"
+                        id="showPasswordCheckbox"
+                        checked={showPassword}
+                        onChange={handleCheckboxChange}
+                    />
+
+
                 </div>
 
                 <button type="submit" style={styles.button}>

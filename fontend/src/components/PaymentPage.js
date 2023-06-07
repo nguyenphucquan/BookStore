@@ -3,9 +3,17 @@ import React, { useState } from 'react';
 import '../styles/Pay.css';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { removeFromCart } from '../redux/cartSlice';
+import { useDispatch } from 'react-redux';
 
 const PaymentPage = () => {
     const [selectedPayment, setSelectedPayment] = useState('');
+    const [address, setAddress] = useState('');
+    const [hoTen, setHoTen] = useState('');
+    const [sdt, setSdt] = useState('');
+    const dispatch = useDispatch();
+
+
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const total = queryParams.get('total');
@@ -14,11 +22,18 @@ const PaymentPage = () => {
     const handlePaymentChange = (event) => {
         setSelectedPayment(event.target.value);
     };
-    const handlePlaceOrder = async () => {
-        // Make a POST request to the API endpoint for sending invoices
+    const handlePlaceOrder = async (bookId) => {
         try {
-            const response = await axios.post('/orders/sendInvoice', { orderId: 123 }); // Replace 123 with the actual order ID
-            console.log(response.data); // Handle the response as per your requirement
+            const id = localStorage.getItem("cartid")
+            const order = {
+                address: address,
+                hovaten: hoTen,
+                sdt: sdt
+            };
+            const response = await axios.post(`http://localhost:8080/orders/checkout?cartId=${id}`, order);
+            localStorage.removeItem("cartItems") 
+            console.log(response.data);
+
         } catch (error) {
             console.error(error);
         }
@@ -32,15 +47,15 @@ const PaymentPage = () => {
                         <div className="card-body">
                             <div className="form-group">
                                 <label htmlFor="fullName">Họ và tên:</label>
-                                <input type="text" className="form-control" id="fullName" placeholder="Quân" />
+                                <input type="text" className="form-control" id="fullName" placeholder="Quân" value={hoTen} onChange={event => setHoTen(event.target.value)} />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="address">Địa chỉ:</label>
-                                <input type="text" className="form-control" id="address" placeholder="123 Ao Sen" />
+                                <input type="text" className="form-control" id="address" placeholder="123 Ao Sen" value={address} onChange={event => setAddress(event.target.value)} />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="phoneNumber">Số điện thọai:</label>
-                                <input type="text" className="form-control" id="phoneNumber" placeholder="+84" />
+                                <input type="text" className="form-control" id="phoneNumber" placeholder="+84" value={sdt} onChange={event => setSdt(event.target.value)} />
                             </div>
                         </div>
                     </div>
@@ -89,7 +104,7 @@ const PaymentPage = () => {
                                         <p className="text-center">{item.book.price}</p>
                                     </div>
                                     <div className="col-3 col-md-3">
-                                        <p className="text-center">{item.book.price*item.quantity}</p>
+                                        <p className="text-center">{item.book.price * item.quantity}</p>
                                     </div>
                                 </div>
                             ))}
@@ -131,7 +146,7 @@ const PaymentPage = () => {
                     </div>
                     <div className="row mt-3">
                         <div className="col-md-12 text-center">
-                            <a href="#" className="btn btn-primary" onClick={handlePlaceOrder}>Place Order</a>
+                            <a href="#" className="btn btn-primary" onClick={handlePlaceOrder()}>Place Order</a>
                         </div>
                     </div>
                 </div>
