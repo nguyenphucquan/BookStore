@@ -7,4 +7,9 @@
     display: flex;
     align-items: center;
   }
-  
+  .success-message {
+    color: green;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+  }  

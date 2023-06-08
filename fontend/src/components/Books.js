@@ -73,7 +73,7 @@ function Books(props) {
                     <td>{book.id}</td>
                     <td>{book.title}</td>
                     <td>{book.author}</td>
-                    <td>{truncateText(book.description, 50)}</td>
+                    <td>{book.description ? truncateText(book.description, 50) : ""}</td>
                     <td>{book.category}</td>
                     <td>{new Date(book.date).toLocaleDateString()}</td>
                     <td>{book.page}</td>

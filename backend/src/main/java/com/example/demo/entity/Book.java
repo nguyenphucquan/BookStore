@@ -2,8 +2,12 @@ package com.example.demo.entity;
 import java.sql.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,13 +48,14 @@ public class Book {
 	@Column(columnDefinition = "nvarchar(255)")
 	private String image;
 
-    @OneToMany(mappedBy = "book")
-    private List<CartItem> cartItems;
-	
+	@JsonManagedReference
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
+    private List<Comment> comments;
+
 
 
 	public Book(Long id, String title, String author, String category, String description, Date date, int sold,
-			int page, double price, String image, List<CartItem> cartItems) {
+			int page, double price, String image) {
 		this.id = id;
 		this.title = title;
 		this.author = author;
@@ -61,7 +66,7 @@ public class Book {
 		this.page = page;
 		this.price = price;
 		this.image = image;
-		this.cartItems = cartItems;
+
 	}
 
 	public Book() {

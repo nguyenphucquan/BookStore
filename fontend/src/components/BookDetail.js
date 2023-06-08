@@ -1,12 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import BookAPI from "../service/BookService";
+import '../styles/BookDetail.css';
 
 function BookDetail() {
   const { id } = useParams();
   const [book, setBook] = useState({});
   const [image, setImage] = useState(null);
   const [isEditable, setIsEditable] = useState(id === "-1");
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Kiểm tra trường tiêu đề
+    if (!book.title) {
+      newErrors.title = "Vui lòng nhập tiêu đề sách.";
+    }
+
+    // Kiểm tra trường tác giả
+    if (!book.author) {
+      newErrors.author = "Vui lòng nhập tác giả sách.";
+    }
+
+    // Kiểm tra trường ngày sản xuất
+    if (!book.date) {
+      newErrors.date = "Vui lòng chọn ngày sản xuất sách.";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0; // Trả về true nếu không có lỗi
+  };
 
   const handleImageUpload = (e) => {
     const selectedImage = e.target.files[0];
@@ -38,7 +63,6 @@ function BookDetail() {
             }
           });
 
-
           const data = await response.json();
 
           const formattedDate = formatDate(data.date);
@@ -54,6 +78,14 @@ function BookDetail() {
     setIsEditable(true);
   };
   const handleSave = async (e) => {
+    e.preventDefault();
+
+    const isValid = validateForm();
+
+    if (!isValid) {
+      return;
+    }
+
     try {
       if (id !== "-1" && !isEditable) {
         e.preventDefault();
@@ -103,13 +135,21 @@ function BookDetail() {
           <div className="col-lg-6">
             <div className="row mb-3">
               <div className="col">
-                <label className="form-label">Tên :</label>
-                <input type="text" className="form-control" value={book.title || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, title: e.target.value })} required />
+                <label className="form-label required">Tên :</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={book.title || ""}
+                  disabled={!isEditable}
+                  onChange={(e) => setBook({ ...book, title: e.target.value })}
+                />
+                {errors.title && <div className="text-danger">{errors.title}</div>}
               </div>
               <div className="col">
-                <label className="form-label">Tác giả:</label>
-                <input type="text" className="form-control" value={book.author || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, author: e.target.value })} required />
-              </div>
+                <label className="form-label required">Tác giả:</label>
+                <input type="text" className="form-control required" value={book.author || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, author: e.target.value })} required/>
+                {errors.author && <div className="text-danger">{errors.author}</div>}
+                </div>
             </div>
             <hr />
             <div className="mb-3">
@@ -119,9 +159,10 @@ function BookDetail() {
             <hr />
             <div className="row mb-3">
               <div className="col">
-                <label className="form-label">Ngày phát hành:</label>
-                <input type="date" className="form-control" value={book.date || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, date: e.target.value })} required/>
-              </div>
+                <label className="form-label required">Ngày phát hành:</label>
+                <input type="date" className="form-control" value={book.date || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, date: e.target.value })} />
+                {errors.date && <div className="text-danger">{errors.date}</div>}
+                </div>
               <div className="col">
                 <label className="form-label">Số trang:</label>
                 <input type="text" className="form-control" value={book.page || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, page: e.target.value })} />

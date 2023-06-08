@@ -12,6 +12,8 @@ const PaymentPage = () => {
     const [hoTen, setHoTen] = useState('');
     const [sdt, setSdt] = useState('');
     const dispatch = useDispatch();
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
 
 
     const location = useLocation();
@@ -31,7 +33,9 @@ const PaymentPage = () => {
                 sdt: sdt
             };
             const response = await axios.post(`http://localhost:8080/orders/checkout?cartId=${id}`, order);
-            localStorage.removeItem("cartItems") 
+            localStorage.removeItem("cartItems")
+           // setShowSuccessMessage(true);
+
             console.log(response.data);
 
         } catch (error) {
@@ -146,11 +150,14 @@ const PaymentPage = () => {
                     </div>
                     <div className="row mt-3">
                         <div className="col-md-12 text-center">
-                            <a href="#" className="btn btn-primary" onClick={handlePlaceOrder()}>Place Order</a>
+                            <a href="#" className="btn btn-primary" onClick={handlePlaceOrder}>Place Order</a>
                         </div>
                     </div>
                 </div>
-
+                {showSuccessMessage && (
+                    <div className="success-message">Checkout thành công!</div>
+                  )}
+                  
             </div>
         </div>
     );

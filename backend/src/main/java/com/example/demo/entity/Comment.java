@@ -2,6 +2,8 @@ package com.example.demo.entity;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,6 +27,7 @@ public class Comment {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "book_id")
+	@JsonBackReference
 	private Book book;
 	
 	@Column(columnDefinition = "nvarchar(255)")

@@ -47,7 +47,6 @@ public class BookService implements IBookService {
 			for (Cart cart : carts) {
 				List<CartItem> cartItems = cart.getItems();
 				cartItems.removeIf(item -> item.getBook().getId().equals(id));
-			
 			}
 			cartRepository.saveAll(carts); 
 			bookRepository.deleteById(id);
