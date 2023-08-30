@@ -147,7 +147,7 @@ function BookDetail() {
               </div>
               <div className="col">
                 <label className="form-label required">Tác giả:</label>
-                <input type="text" className="form-control required" value={book.author || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, author: e.target.value })} required/>
+                <input type="text" className="form-control required" value={book.author || ""} disabled={!isEditable} onChange={(e) => setBook({ ...book, author: e.target.value })}/>
                 {errors.author && <div className="text-danger">{errors.author}</div>}
                 </div>
             </div>
@@ -233,7 +233,7 @@ function BookDetail() {
                 Save
               </button>
             ) : (
-              <button className="btn btn-primary" onClick={handleEdit}>
+              <button className="btn btn-primary" >
                 Edit
               </button>
             )}

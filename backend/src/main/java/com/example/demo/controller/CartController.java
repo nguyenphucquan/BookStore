@@ -45,8 +45,8 @@ public class CartController {
 	}
 
 	@GetMapping("/get/items")
-	public ResponseEntity<List<CartItem>> getCartItems(@RequestParam("id") Long cartId) {
-		Cart cart = cartService.getCartById(cartId);
+	public ResponseEntity<List<CartItem>> getCartItems(@RequestParam("id") String cartId) {
+		Cart cart = cartService.getCartById(Long.valueOf(cartId));
 		if (cart == null) {
 			return ResponseEntity.notFound().build();
 		}

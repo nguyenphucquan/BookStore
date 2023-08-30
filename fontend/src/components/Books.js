@@ -6,7 +6,9 @@ import { useSelector } from "react-redux";
 function Books(props) {
   const [books, setBooks] = useState([]);
   const navigate = useNavigate();
-  const { userRole, isLoggedIn } = useSelector(state => state.authReducer); // Thêm state để kiểm tra trạng thái đăng nhập
+  const { userRole, isLoggedIn } = useSelector(state => state.authReducer);
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   const onViewClick = (id) => {
     navigate(`/book/${id}`);
@@ -38,16 +40,34 @@ function Books(props) {
     return text;
   };
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredBooks = books.filter((book) =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       <h2 className="text-center">Books List</h2>
       <div className="d-flex justify-content-center mb-3">
         <div className="col-auto">
-          {isLoggedIn && ( // Chỉ hiển thị nút "Add Book" nếu đã đăng nhập
+          {isLoggedIn && userRole === "ADMIN" && (
             <button className="btn btn-primary" onClick={() => onViewClick(-1)}>
               Add Book
             </button>
           )}
+          <div className="input-group mt-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by title"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+
+          </div>
         </div>
       </div>
       <div className="row">
@@ -63,39 +83,39 @@ function Books(props) {
                 <th>Ngày phát hành</th>
                 <th>Số trang</th>
                 <th>Đã bán</th>
-                {isLoggedIn && <th>Action</th>} {/* Chỉ hiển thị cột "Action" nếu đã đăng nhập */}
+                {isLoggedIn && userRole === "ADMIN" && <th>Action</th>}
               </tr>
             </thead>
             <tbody>
-              {books &&
-                books.map((book) => (
-                  <tr key={book.id}>
-                    <td>{book.id}</td>
-                    <td>{book.title}</td>
-                    <td>{book.author}</td>
-                    <td>{book.description ? truncateText(book.description, 50) : ""}</td>
-                    <td>{book.category}</td>
-                    <td>{new Date(book.date).toLocaleDateString()}</td>
-                    <td>{book.page}</td>
-                    <td>{book.sold}</td>
-                    {isLoggedIn && ( // Chỉ hiển thị nút "View" và "Delete" nếu đã đăng nhập
-                      <td>
-                        <button
-                          className="btn btn-primary me-2"
-                          onClick={() => onViewClick(book.id)}
-                        >
-                          View
-                        </button>
-                        <button
-                          className="btn btn-danger"
-                          onClick={() => handleDelete(book.id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    )}
-                  </tr>
-                ))}
+              {filteredBooks.map((book) => (
+                <tr key={book.id}>
+                  <td>{book.id}</td>
+                  <td>{book.title}</td>
+                  <td>{book.author}</td>
+                  <td>{book.description ? truncateText(book.description, 50) : ""}</td>
+                  <td>{book.category}</td>
+                  <td>{new Date(book.date).toLocaleDateString()}</td>
+
+                  <td>{book.page}</td>
+                  <td>{book.sold}</td>
+                  {isLoggedIn && userRole === "ADMIN" && (
+                    <td>
+                      <button
+                        className="btn btn-primary me-2"
+                        onClick={() => onViewClick(book.id)}
+                      >
+                        View
+                      </button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => handleDelete(book.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -103,5 +123,11 @@ function Books(props) {
     </div>
   );
 }
-
 export default Books;
+
+
+
+
+
+
+

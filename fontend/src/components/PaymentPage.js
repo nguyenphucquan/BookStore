@@ -34,7 +34,7 @@ const PaymentPage = () => {
             };
             const response = await axios.post(`http://localhost:8080/orders/checkout?cartId=${id}`, order);
             localStorage.removeItem("cartItems")
-           // setShowSuccessMessage(true);
+            setShowSuccessMessage(true);
 
             console.log(response.data);
 
@@ -105,10 +105,10 @@ const PaymentPage = () => {
                                         <p className="text-center">{item.quantity}</p>
                                     </div>
                                     <div className="col-3 col-md-3">
-                                        <p className="text-center">{item.book.price}</p>
+                                        <p className="text-center">{item.book.price}đ</p>
                                     </div>
                                     <div className="col-3 col-md-3">
-                                        <p className="text-center">{item.book.price * item.quantity}</p>
+                                        <p className="text-center">{item.book.price * item.quantity}đ</p>
                                     </div>
                                 </div>
                             ))}

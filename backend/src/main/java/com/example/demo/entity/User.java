@@ -25,7 +25,7 @@ public class User {
     private String email;
     private String passWord;
     private String roles;
-    
+     
 	public Long getId() {
 		return id;
 	}

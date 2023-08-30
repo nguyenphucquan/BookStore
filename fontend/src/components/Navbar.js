@@ -17,7 +17,7 @@ function Navbar() {
         localStorage.removeItem('userRole');
         localStorage.removeItem('idUser');
         localStorage.removeItem('cartid');
-        localStorage.removeItem('x');
+        localStorage.removeItem('cartItems');
         localStorage.removeItem('username');
 
     };
@@ -25,7 +25,7 @@ function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-gradient" style={{ backgroundColor: "gainsboro" }}>
             <form className="d-flex">
-                {userRole !== 'ADMIN' && (
+                {userRole !== 'ADMIN' && isLoggedIn && (
                     <NavLink to="/shoping-cart" className="btn btn-outline-dark" activeClassName="active">
                         <i className="fa-solid fa-cart-shopping"></i>
                         Cart
@@ -67,7 +67,9 @@ function Navbar() {
                             <>
                                 {isLoggedIn ? (
                                     <li className="nav-item">
-                                        <div className="nav-link">Xin chào {localStorage.getItem('username')}</div>
+                                        <div className={`nav-link ${userRole === 'ADMIN' ? 'text-danger' : ''}`}>
+                                            Xin chào {localStorage.getItem('username')}
+                                        </div>
                                     </li>
                                 ) : (
                                     <>
